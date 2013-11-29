@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+
+<!-- ======================================================================= -->
+<!-- JSONTopicMap             											 -->
+<!-- @copyright 2013 TopicQuests											 -->
+<!-- @license Apache2                                  					     -->
+<!-- ======================================================================= -->
+
+<project name="JSONTopicMap" default="compile" basedir=".">
+
+	<!--  properties -->
+	<property file="build.properties" />
+
+	<property name="basedir" value="." />
+	
+	<property name="src.dir" value="${basedir}/src/" />
+
+
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="classes.dir" value="${basedir}/classes" />
+
+	<property name="compile.debug" value="on" />
+	<property name="compile.deprecation" value="on" />
+	<property name="complle.optimize" value="on" />
+
+	<!-- =================================================================== -->
+	<!-- Classpath etc.                                                      -->
+	<!-- =================================================================== -->
+	<path id="build.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${classes.dir}">
+			<include name="/**/*.class" />
+		</fileset>
+	</path>
+
+
+	<!-- =================================================================== -->
+	<!-- Compile                                                             -->
+	<!-- =================================================================== -->
+
+	<target name="compile">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="${compile.debug}" 
+			deprecation="${compile.deprecation}" optimize="${optimize}" target="1.6">
+			<classpath refid="build.classpath" />
+		</javac>
+		<jar file="json-topicmap-${buildversion}.jar" basedir="${classes.dir}" />
+	</target>
+</project>
+

@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<!-- JSONBlobStore properties
+	-->
+
+<properties>
+
+	<!-- Model created for a local, embedded index 
+	<parameter name="Model" value="org.topicquests.persist.json.es.ElasticSearchEmbeddedModel" /> -->
+	
+	<!-- Model created for remote and cluster servers -->
+	<parameter name="Model" value="org.topicquests.persist.json.es.ElasticSearchClusterModel" /> 
+	
+	<!-- This is a plugin model which allows developers to create
+		custom query DSLs according to specific needs -->
+	<parameter name="QueryEngine" value = "org.topicquests.persist.json.es.SimpleElasticSearchQueryEngine" />
+	<parameter name="TreeEngine" value = "org.topicquests.persist.json.es.TreeWriter" />
+	<parameter name="NumShards" value="1"/>
+	<parameter name="NumDuplicates" value="0"/>
+	
+	
+	<!-- Multiple entries possible for clusters -->
+	<list name="Clusters">
+		<parameter name="localhost" value="9300" /> 
+	</list>
+
+	<!-- Index must be lowercase 
+		These are hardwired inside the class JSONDocStoreModel -->
+	<list name="IndexNames">
+		<parameter name="DocumentIndex" value="documents" />
+		<parameter name="WordGramIndex" value = "wordgrams" />
+		<parameter name="SentenceIndex" value = "sentences" />
+		<parameter name="TupleIndex" value = "tuples" />
+		<parameter name="TopicIndex" value = "topics" />
+		<parameter name="VertexIndex" value = "vertices" />
+		<parameter name="EdgeIndex"	  value = "edges" />
+	</list>
+
+</properties>
+

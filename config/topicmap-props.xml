@@ -1,0 +1,122 @@
+<?xml version="1.0" ?>
+<!-- SolrAgentCoordinator properties
+	These properties configure an "ecosystem" among agents which
+	plug into the SolrAgentFramework
+	20130223 jp2: latest
+	-->
+
+<properties>
+
+	<!-- 
+		ShouldBootstrap: 
+			Yes = test for bootstrap the topic map
+			No = do not test for bootstrap
+		Only one config-props.xml file should say "Yes" in
+			an installation; typically on the SolrAgentFramework that includes
+			the MergeAgent. Other installations of SolrAgentFramework
+			in the area or network should say "No".
+			It is unlikely that there will be problems, the probability
+			that two agents, while booting, will decide to begin the
+			bootstrap process at the same time is not nil.
+	 -->
+	<parameter name="ShouldBootstrap" value="Yes" /> 
+	
+	<!-- 
+		Allows for a plug-in dataprovider
+		 -->
+	<parameter name="DataProviderClass" value = "org.topicquests.topicmap.json.persist.JSONDocStoreTopicMapProvider" />
+	
+	<!-- Select either stand-alone client or SolrCloud client
+	 -->
+<!-- 	<parameter name="SolrClient" value="org.topicquests.solr.Solr3Client" /> -->
+	<parameter name="SolrClient" value="org.topicquests.solr.SolrCloudClient" />  
+	<!-- 
+		The core TopicQuests topic map platform has an internal merge function which
+		is plug-in swappable. "MergeImplementation" is the key to get the
+		classpath (value) for that object
+	 -->
+	<parameter name="MergeImplementation" value="org.topicquests.solr.merge.MergeBean" /> 
+
+	<!-- 
+		AgentBehavior value is a string which determines certain behaviors.
+		There are presently two types of behaviours:
+			"harvest"  where the system stays tightly coupled with Solr update events
+			"model" where the system watches other SolrAgentEnvironment instances
+				for requests for models or results
+		Behaviors are defined in IAgentFrameworkBehavior
+			though it might be possible to make the behavior extensible such
+			that new behaviors can be "plugged in" by way of the agents
+			themselves.
+	 -->
+	<parameter name="AgentBehavior" value="harvest" /> 
+	
+	<!-- 
+		AgentName gives this agent a unique identity when talking to
+		SolrAgentCoordinator(s). The string can be anything, just so long as it is
+		unique in a society of agents all polling the same blackboard.
+	 -->
+	<parameter name="AgentName" value="94026" /> 
+
+	<!-- 
+		This platform includes an instance of SemiSpace blackboard (tuplespace).
+		It needs a unique name for its Tracer log
+	 -->
+	<parameter name="SemiSpaceName" value="SemiSpace94026" /> 
+	
+	<!-- This is for one to many SolrCore servers as singleton or in a cloud -->
+	<list name="SolrURLs">
+		<!-- if it's localhost, this should work: http://localhost:8983/solr/ "http://10.1.10.80:8993/solr/"-->
+	
+		<parameter name="localhost" value="http://localhost:8983/solr/" /> <!-- CHANGE ME -->
+	</list>
+	<!-- ZooKeeper Hosts
+		This is for one to many ZooKeeper installations -->
+	<list name="ZKHosts">
+		<parameter name="local" value="http://localhost:2181/" /> <!-- CHANGE ME -->
+	</list>
+	<!-- number of nodes cached internally  -->
+	<parameter name="MapCacheSize" value="1024" /> 
+
+	<!-- 
+		provide a list of agents, which must be in the classpath, for booting.
+		Each agent implements the org.topicquests.solr.api.IPluggableAgent interface.
+		MockAgent is for testing.
+		used in SolrEnvironment; they are the last to boot since they
+		go right to work
+		Note that the "name" field in each parameter is the name given to this
+		agent for its log tracer; each name must be unique in the group,
+		and unique in terms of SemiSpaceName and AgentName above
+	 -->
+	<list name="Agents">
+		<parameter name="Merger" value="org.topicquests.solr.agents.merge.SolrMergeAgent" />
+	</list>	
+
+	<!-- 
+		These are individual IPortfolioAgents which are used by the
+		"Merger" merge agent. If a merge agent is not installed in the "Agents" list
+		then these will not be called
+	 -->
+	<list name="PortfolioAgents">
+		<parameter name="LabelAgent" value="org.topicquests.solr.agents.merge.agents.LabelMergeAgent" />
+		<parameter name="DetailsAgent" value="org.topicquests.solr.agents.merge.agents.DetailsMergeAgent" />
+		<parameter name="TuplesAgent" value="org.topicquests.solr.agents.merge.agents.TupleMergeAgent" />
+	</list>	
+	
+	
+	<!-- 
+		port for the TupleSpaceConnector
+		used in AgentEnvironment
+	 -->
+	<parameter name="TuplespacePort" value="2930" /> <!-- CHANGE ME -->
+	<!-- 
+		server for the TupleSpaceConnector
+		NOTE: if this system must listen to multiple instances of
+		SolrAgentCoordinator, then there may be different instances
+		of this parameter with slightly different name and value
+		used in AgentEnvironment
+	 -->
+	<parameter name="TuplespaceServer" value="localhost" /> <!-- CHANGE ME -->
+
+
+</properties>
+

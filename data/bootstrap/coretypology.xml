@@ -1,0 +1,1797 @@
+<topicmap legend="CoreLegend">
+<node locator="TypeType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology root node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Type Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:13]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:13]]></value>
+  </property>
+</node>
+<node locator="PropertyType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[TypeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology property node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="label">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology label string property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Label String Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="subOf">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology subclassOf property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Subclass Of Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="tuples">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology tuple list property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Tuple List Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="tupleObjectType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology tuple object type property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Tuple Object Type Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="backlinks">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology backlink list property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Backlink List Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="graphparent">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology graph parent property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Graph Parent Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="lastEditDate">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology last edit date property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Last Edit Date Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="creatorId">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology creator id property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Creator ID Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="isPrivate">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology isPrivate property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Is Private Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="tupleObject">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology tuple object property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Tuple Object Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="tupleSubjectType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology tuple subject type property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Tuple Subject Type Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="scopes">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology scope list property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Scope List Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="mergeList">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology merge list property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Merge List Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="lastEditDate">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology last edit date property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Last Edit Date Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="creatorId">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology creator id property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Creator ID Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="isPrivate">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology isPrivate property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Is Private Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="tupleObject">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology tuple object property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Tuple Object Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="tupleSubjectType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology tuple subject type property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Tuple Subject Type Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="scopes">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology scope list property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Scope List Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="mergeList">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology merge list property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Merge List Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="graphconlist">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology graph concept list property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Graph Concept List Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="createdDate">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology created date property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Created Date Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="smallIcon">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology small image path property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Small Image Path Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="isTransclude">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology tuple isTranscluded property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Tuple Is Transcluded Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="tupleSubjectRole">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology tuple subject's role property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Tuple Subject Role Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="tupleTheme">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology tuple theme property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Tuple Theme Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="tupleSig">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology tuple signature property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Tuple Signature Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="mergeReasonRules">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology merge reason rules list property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Merge Reason Rules List Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="instanceOf">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology instanceOf property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Instance Of Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="restrictions">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology restriction property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Restriction Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="tuplesR">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology restricted tuple list property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Restricted Tuple List Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="tupleObjectRole">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology tuple object's role property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Tuple Object Role Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="psi">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology PSI (published subject indicator) property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[PSI Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="mergetuple">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology merge tuple property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Merge Tuple Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="graphrelnlist">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/snowflake.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[PropertyType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology graph relation list property type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Graph Relation List Property Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/snowflake_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="RelationType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[TypeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology relation node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Relation Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="UnMergeAssertionType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[RelationType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology unmerge assertion node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Unmerge Assertion Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="MergeAssertionType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[RelationType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology merge assertion node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Merge Assertion Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="PossibleMergeAssertionType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[RelationType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology possible merge assertion node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Possible Merge Assertion Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="OntologyType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[TypeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology ontology node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Ontology Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="RuleType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[TypeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology rule node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Rule Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="MergeRuleType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[RuleType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology merge rule node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Merge Rule Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="UserType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[TypeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology user node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[User Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="SystemUser">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests System User.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="instanceOf" >
+    <value><![CDATA[UserType]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[System user]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="UnknownUserType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[UserType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology unknown user node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Unknown User Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="ForeignUserType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[UserType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology foreign user node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Foreign User Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="AgentType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[UserType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology agent user node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Agent User Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="MergeAgentType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[AgentType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology merge agent node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Merge Agent User Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="HarvestAgentType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[AgentType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology harvest agent node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Harvest Agent User Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="LegendType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[TypeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology legend node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Legend Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="ScopeType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[TypeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology scope node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Scope Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="MergeRuleScopeType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[ScopeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology merge rule scope node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Merge Rule Scope Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="ThemeType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[ScopeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology theme node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Theme Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="ClassType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[TypeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology class node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Class Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="NodeType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[ClassType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Node Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="VirtualNodeType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[NodeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology virtual node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Virtual Node Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="GraphType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[ClassType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology graph type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Graph Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="RoleType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[TypeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology role node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Role Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="ResourceType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[TypeType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology resource node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Resource Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+<node locator="WebResourceType">
+  <property key="smallIcon" >
+    <value><![CDATA[/images/cogwheel.png]]></value>
+  </property>
+  <property key="subOf" >
+    <value><![CDATA[ResourceType]]></value>
+  </property>
+  <property key="details" >
+    <value><![CDATA[The TopicQuests typology web resource node type.]]></value>
+  </property>
+  <property key="isPrivate" >
+    <value><![CDATA[false]]></value>
+  </property>
+  <property key="creatorId" >
+    <value><![CDATA[SystemUser]]></value>
+  </property>
+  <property key="label" >
+    <value><![CDATA[Web Resource Type]]></value>
+  </property>
+  <property key="largeIcon" >
+    <value><![CDATA[/images/cogwheel_sm.png]]></value>
+  </property>
+  <property key="lastEditDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+  <property key="createdDate" >
+    <value><![CDATA[2013-11-26 18:19:19]]></value>
+  </property>
+</node>
+</topicmap>
