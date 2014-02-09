@@ -19,7 +19,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.topicquests.common.api.ITopicQuestsOntology;
+import org.topicquests.model.TicketPojo;
+import org.topicquests.model.api.ITicket;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
+import org.topicquests.topicmap.json.model.StatisticsUtility;
+import org.topicquests.topicmap.json.model.TopicMapJSONExporter;
 import org.topicquests.topicmap.json.model.TopicMapXMLExporter;
 import org.topicquests.topicmap.json.model.api.IExporterListener;
 
@@ -30,16 +34,16 @@ import org.topicquests.topicmap.json.model.api.IExporterListener;
 public class ExportTest implements IExporterListener {
 	private JSONTopicmapEnvironment environment;
 	private PrintWriter writer;
-	private Set<String>credentials;
+	private ITicket credentials;
 	/**
 	 * 
 	 */
 	public ExportTest() {
-		environment = new JSONTopicmapEnvironment();
+		environment = new JSONTopicmapEnvironment(new StatisticsUtility());
 		//create credentials
-		credentials = new HashSet<String>();
-		credentials.add(ITopicQuestsOntology.SYSTEM_USER);
-		TopicMapXMLExporter exporter = environment.getXMLExporter();
+		credentials = new TicketPojo(ITopicQuestsOntology.SYSTEM_USER);
+		//TopicMapXMLExporter exporter = environment.getXMLExporter();
+		TopicMapJSONExporter exporter = environment.getJSONExporter();
 		exporter.setListener(this);
 		try {
 			File f = new File("ExportTest"+System.currentTimeMillis()+".xml");
@@ -47,7 +51,7 @@ public class ExportTest implements IExporterListener {
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			writer = new PrintWriter(bos);
 			writer.println("<topicmap>");
-			exporter.exportXmlTreeFile(ITopicQuestsOntology.TYPE_TYPE, writer, credentials, true);
+			exporter.exportJSONFile(ITopicQuestsOntology.TYPE_TYPE, writer, credentials, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			environment.shutDown();

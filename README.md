@@ -4,7 +4,7 @@ JSONTopicMap
 Full TMRM (ISO-13250-5) TopicMap for ElasticSearch
 
 Status: *very-pre-alpha*<br/>
-Latest edit: 20131129<br/>
+Latest edit: 20140209<br/>
 ## Background ##
 For many SolrSherlock and other projects, a simple, scalable topic map platform is needed. In particular, SolrSherlock's text harvesting platform needs one to function in isolation of other topic maps.
 
@@ -16,6 +16,8 @@ The file ExportTest1385517929160.xml is the result of the ExportTest. This shows
 This is a really early release; lots to do, but tests show it is possible to build a topic map and use the INodeQuery object to navigate. Many more tests will be added.
 
 ## Update History ##
+20140209 This project has been through rapid evolution while being used in a text-reading project.
+
 20131129 First GitHub commit
 
 ## ToDo ##

@@ -15,8 +15,7 @@
  */
 package org.topicquests.topicmap.json.model;
 
-import java.util.Set;
-
+import org.topicquests.model.api.ITicket;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -48,7 +47,7 @@ public class QueryModel implements IQueryModel {
 	 */
 	@Override
 	public IQueryIterator listNodesByLabel(String label, String language,
-			int count, Set<String> credentials) {
+			int count, ITicket  credentials) {
 		IQueryIterator itr = new QueryIterator(environment);
 		QueryBuilder q = QueryBuilders.termQuery(makeField(label,language), QueryUtil.escapeQueryCulprits(label));
 		environment.logDebug("QueryModel.listNodesByDetails- "+q.toString());
@@ -62,7 +61,7 @@ public class QueryModel implements IQueryModel {
 	 */
 	@Override
 	public IQueryIterator listNodesByDetails(String details, String language,
-			int count, Set<String> credentials) {
+			int count, ITicket  credentials) {
 		IQueryIterator itr = new QueryIterator(environment);
 		QueryBuilder q = QueryBuilders.termQuery(makeField(detailsQuery,language), QueryUtil.escapeQueryCulprits(details));
 		environment.logDebug("QueryModel.listNodesByDetails- "+q.toString());
@@ -76,7 +75,7 @@ public class QueryModel implements IQueryModel {
 	 */
 	@Override
 	public IQueryIterator listTuplesByRelation(String relationType, int count,
-			Set<String> credentials) {
+			ITicket  credentials) {
 		IQueryIterator itr = new QueryIterator(environment);
 		QueryBuilder q = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, relationType);
 		environment.logDebug("QueryModel.listTuplesByRelation- "+q.toString());
@@ -89,7 +88,7 @@ public class QueryModel implements IQueryModel {
 	 */
 	@Override
 	public IQueryIterator listNodeInstances(String nodeTypeLocator, int count,
-			Set<String> credentials) {
+			ITicket  credentials) {
 		IQueryIterator itr = new QueryIterator(environment);
 		QueryBuilder q = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, nodeTypeLocator);
 		environment.logDebug("QueryModel.listNodeInstances- "+q.toString());
@@ -102,7 +101,7 @@ public class QueryModel implements IQueryModel {
 	 */
 	@Override
 	public IQueryIterator listNodeSubclasses(String superClassLocator,
-			int count, Set<String> credentials) {
+			int count, ITicket  credentials) {
 		IQueryIterator itr = new QueryIterator(environment);
 		QueryBuilder q = QueryBuilders.termQuery(ITopicQuestsOntology.SUBCLASS_OF_PROPERTY_TYPE, superClassLocator);
 		environment.logDebug("QueryModel.listNodeSubclasses- "+q.toString());

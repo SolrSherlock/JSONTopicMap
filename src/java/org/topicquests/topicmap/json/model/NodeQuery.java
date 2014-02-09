@@ -23,16 +23,17 @@ import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.Compare;
-import org.topicquests.model.Node;
 import org.topicquests.model.api.IDataProvider;
 import org.topicquests.model.api.INode;
 import org.topicquests.model.api.INodeQuery;
 import org.topicquests.model.api.IPredicate;
 import org.topicquests.model.api.ITuple;
 import org.topicquests.model.api.ITupleQuery;
+import org.topicquests.model.api.ITicket;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
-import org.topicquests.topicmap.json.model.api.IJSONTopicMapOntology;
+//import org.topicquests.topicmap.json.model.api.IJSONTopicMapOntology;
 import org.topicquests.util.LoggingPlatform;
+import org.topicquests.model.Node;
 
 /**
  * @author park
@@ -41,14 +42,14 @@ import org.topicquests.util.LoggingPlatform;
 public class NodeQuery implements INodeQuery {
 	private LoggingPlatform log = LoggingPlatform.getLiveInstance();
 	private IDataProvider database;
-	private IJSONDocStoreModel jsonModel;
+//	private IJSONDocStoreModel jsonModel;
 	private INode me;
     public List<HasContainer> hasContainers = new ArrayList<HasContainer>();
     private List<JSONObject>foundTuples = null;
     private List<ITuple>filteredTuples = null;
     private List<INode>filteredNodes = null;
     private boolean isFiltered = false;
-	private JSONParser parser;
+//	private JSONParser parser;
 	private ITupleQuery tupleQuery;
 
 	/**
@@ -59,17 +60,17 @@ public class NodeQuery implements INodeQuery {
 	 */
 	public NodeQuery(INode n, IDataProvider dp, IJSONDocStoreModel m) {
 		me = n;
-		jsonModel = m;
+//		jsonModel = m;
 		this.database = dp;
 		tupleQuery = database.getTupleQuery();
-		parser = new JSONParser();
+//		parser = new JSONParser();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.topicquests.topicmap.json.model.api.INodeQuery#tuples(java.util.Set)
 	 */
 	@Override
-	public IResult tuples(Set<String> credentials) {
+	public IResult tuples(ITicket credentials) {
 		IResult result = new ResultPojo();
 		if (!isFiltered) {
 			IResult r = executeQuery(credentials);
@@ -85,7 +86,7 @@ public class NodeQuery implements INodeQuery {
 	 * @see org.topicquests.topicmap.json.model.api.INodeQuery#nodes(java.util.Set)
 	 */
 	@Override
-	public IResult nodes(Set<String> credentials) {
+	public IResult nodes(ITicket credentials) {
 		IResult result = new ResultPojo();
 		if (!isFiltered) {
 			IResult r = executeQuery(credentials);
@@ -123,7 +124,7 @@ public class NodeQuery implements INodeQuery {
 	 */
 	@Override
 	public INodeQuery setRelationType(String relationType,
-						int start, int count, Set<String> credentials) {
+						int start, int count, ITicket credentials) {
 		//clear everything
 		foundTuples = null;
 		filteredTuples = null;
@@ -156,7 +157,7 @@ public class NodeQuery implements INodeQuery {
 	 * @see org.topicquests.topicmap.json.model.api.INodeQuery#nodeLocators(java.util.Set)
 	 */
 	@Override
-	public IResult nodeLocators(Set<String> credentials) {
+	public IResult nodeLocators(ITicket credentials) {
 		IResult result = new ResultPojo();
 		if (foundTuples == null)
 			result.addErrorString("No tuples found in this query");
@@ -222,7 +223,7 @@ public class NodeQuery implements INodeQuery {
         return this;
 	}
 
-	private IResult executeQuery(Set<String> credentials) {
+	private IResult executeQuery(ITicket credentials) {
 		IResult result = new ResultPojo();
 		filteredTuples = new ArrayList<ITuple>();
 		if (foundTuples != null && !foundTuples.isEmpty()) {

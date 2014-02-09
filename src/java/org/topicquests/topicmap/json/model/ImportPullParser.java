@@ -85,6 +85,7 @@ public class ImportPullParser {
 	         String key = null;
 	         String value = null;
 	         Date date = null;
+	         String userId = ITopicQuestsOntology.SYSTEM_USER; // default
 	         Map<String,String> attributes = null;
 	         ArrayList<List> theList = null;
 	         Map<String,String> stringMap = null;
@@ -92,6 +93,7 @@ public class ImportPullParser {
 	         boolean isStop = false;
 	         while (!(isStop || eventType == XmlPullParser.END_DOCUMENT)) {
 	            temp = xpp.getName();
+	            text = null;
 	            attributes = getAttributes(xpp);
 	            if (attributes != null) {
 	            	name = (String)attributes.get("name");
@@ -124,7 +126,6 @@ public class ImportPullParser {
 	                } else if (temp.equalsIgnoreCase(IXMLFields.PROPERTY)) {
 	                	key = (String)attributes.get(IXMLFields.KEY_ATT);
 	                } else if (temp.equalsIgnoreCase(IXMLFields.VALUE)) {
-	                	
 	                } else if (temp.equalsIgnoreCase(IXMLFields.DATABASE)) {
 	                	
 	                }
@@ -159,8 +160,17 @@ public class ImportPullParser {
 	                		theNode.setIsPrivate(value);
 	                	} else if (key.equals(ITopicQuestsOntology.TUPLE_IS_TRANSCLUDE_PROPERTY)) {
 	                		((ITuple)theNode).setIsTransclude(value);
+	                	} else if (key.equals(ITopicQuestsOntology.LABEL_PROPERTY)) {
+	                		theNode.addLabel(value, "en", userId, false);
+	                	} else if (key.equals(ITopicQuestsOntology.SMALL_LABEL_PROPERTY)) {
+	                		theNode.addSmallLabel(value, "en", userId, false);
+	                	} else if (key.equals(ITopicQuestsOntology.DETAILS_PROPERTY)) {
+	                		theNode.addDetails(value, "en", userId, false);
+	                		
 	                	} else
 	                		theNode.addPropertyValue(key, value);
+	                	if (key.equals(ITopicQuestsOntology.CREATOR_ID_PROPERTY))
+	                		userId = value;
 	                } else if (temp.equalsIgnoreCase(IXMLFields.DATABASE)) {
 	                	
 	                }

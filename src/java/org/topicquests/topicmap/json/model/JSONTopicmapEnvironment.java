@@ -15,44 +15,77 @@
  */
 package org.topicquests.topicmap.json.model;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.*;
 
 import org.nex.config.ConfigPullParser;
 import org.topicquests.model.BiblioBootstrap;
 import org.topicquests.model.CoreBootstrap;
 import org.topicquests.model.RelationsBootstrap;
+import org.topicquests.model.TicketPojo;
 import org.topicquests.model.api.IDataProvider;
 import org.topicquests.model.api.IQueryModel;
+import org.topicquests.model.api.ITicket;
 import org.topicquests.persist.json.JSONDocStoreEnvironment;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
+import org.topicquests.topicmap.json.merge.SameLabelMergeHandler;
+import org.topicquests.topicmap.json.merge.VirtualizerHandler;
+import org.topicquests.topicmap.json.model.api.IExtendedConsoleDisplay;
+import org.topicquests.topicmap.json.model.api.IExtendedEnvironment;
+import org.topicquests.topicmap.json.model.api.IJSONDataProvider;
+import org.topicquests.topicmap.json.model.api.ISocialBookmarkModel;
+import org.topicquests.topicmap.json.model.api.IVirtualizer;
 import org.topicquests.topicmap.json.persist.JSONDocStoreTopicMapProvider;
 import org.topicquests.util.LoggingPlatform;
 import org.topicquests.util.Tracer;
 import org.topicquests.common.api.IConsoleDisplay;
+import org.topicquests.common.api.ITopicQuestsOntology;
+//import org.topicquests.topicmap.json.model.api.IExporterListener;
+import org.topicquests.topicmap.json.mp.AMPQHandler;
+
 
 
 /**
  * @author park
  *
  */
-public class JSONTopicmapEnvironment implements IConsoleDisplay {
+public class JSONTopicmapEnvironment 
+	implements IConsoleDisplay, IExtendedEnvironment {
 	public LoggingPlatform log = LoggingPlatform.getInstance("logger.properties");
 	private JSONDocStoreEnvironment jsonEnvironment;
 	private IJSONDocStoreModel jsonModel;
-	private IDataProvider dataProvider;
+	private IJSONDataProvider dataProvider;
 	private Map<String,Object>props;
 	private TopicMapXMLExporter xmlExporter;
-	public IQueryModel model;
-	private IConsoleDisplay console = null;
+	private IQueryModel queryModel;
+	private IExtendedConsoleDisplay console = null;
+	private ISocialBookmarkModel bookmarkModel;
+	private SameLabelMergeHandler sameLabelMerger;
+	protected IVirtualizer virtualizer;
+	private VirtualizerHandler virtualizerHandler;
+	private TopicMapJSONExporter jsonExporter;
+	private StatisticsUtility stats;
+	private SearchEnvironment searcher;
+	private AMPQHandler messenger;
 
 
-	public void setConsole(IConsoleDisplay c) {
-		console = c;
+	public SearchEnvironment getSearchEnvironment() {
+		return searcher;
 	}
+	public void setConsole(IExtendedConsoleDisplay c) {
+		console = c;
+		//must wait till we have a console
+		searcher = new SearchEnvironment(this);
+	}
+	
 	/**
 	 *
 	 */
-	public JSONTopicmapEnvironment() {
+	public JSONTopicmapEnvironment(StatisticsUtility u) {
+		stats = u;
 		ConfigPullParser p = new ConfigPullParser("topicmap-props.xml");
 		props = p.getProperties();
 		jsonEnvironment = new JSONDocStoreEnvironment();
@@ -77,23 +110,36 @@ public class JSONTopicmapEnvironment implements IConsoleDisplay {
 	}
 	
 	void init() {
+		if (stats == null)
+			stats = new StatisticsUtility();
 		try {
 			String siz = getStringProperty("MapCacheSize");
 			System.out.println("XXXX "+siz);
 			int cachesize = Integer.parseInt(siz);
 			dataProvider = new JSONDocStoreTopicMapProvider(this, cachesize) ;
+			siz = getStringProperty("VirtualizerClass");
+			virtualizer = (IVirtualizer)Class.forName(siz).newInstance();
+			virtualizer.init(this);
 		} catch (Exception e) {
 			log.logError(e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
+		virtualizerHandler = new VirtualizerHandler(this);
+		dataProvider.setVirtualizerHandler(virtualizerHandler);
+		queryModel = new QueryModel(this);
 		xmlExporter = new TopicMapXMLExporter(dataProvider);
+		jsonExporter = new TopicMapJSONExporter(dataProvider);
+		bookmarkModel = new SocialBookmarkModel(this);
 		String bs = (String)props.get("ShouldBootstrap");
+		sameLabelMerger = new SameLabelMergeHandler(this);
+		messenger = new AMPQHandler(this);
 		boolean shouldBootstrap = false; // default value
 		if (bs != null)
 			shouldBootstrap = bs.equalsIgnoreCase("Yes");
 		if (shouldBootstrap)
 			bootstrap();
 	}
+	
 	/**
 	 * Available to extensions if needed
 	 */
@@ -106,12 +152,44 @@ public class JSONTopicmapEnvironment implements IConsoleDisplay {
 		rbs.bootstrap();
 	}
 	
+	public IQueryModel getQueryModel() {
+		return queryModel;
+	}
+	
+	public VirtualizerHandler getVirtualizerHandler() {
+		return virtualizerHandler;
+	}
+	
+	public StatisticsUtility getStats() {
+		return stats;
+	}
+	
+	public IExtendedConsoleDisplay getConsoleDisplay() {
+		return this.console;
+	}
+	/**
+	 * Really only used internally
+	 * @return
+	 */
+	public IVirtualizer getVirtualizer() {
+		return virtualizer;
+	}
+	
+	public SameLabelMergeHandler getSameLabelMergeHandler() {
+		return sameLabelMerger;
+	}
+	
 	public TopicMapXMLExporter getXMLExporter() {
 		return xmlExporter;
 	}
 	
-	public IDataProvider getTopicDataProvider() {
+	@Override
+	public IDataProvider getDataProvider() {
 		return dataProvider;
+	}
+	
+	public ISocialBookmarkModel getBookmarkModel() {
+		return bookmarkModel;
 	}
 
 	public JSONDocStoreEnvironment getJSONEnvironment() {
@@ -122,18 +200,53 @@ public class JSONTopicmapEnvironment implements IConsoleDisplay {
 		return jsonModel;
 	}
 	
+	public TopicMapJSONExporter getJSONExporter() {
+		return this.jsonExporter;
+	}
+	
+	@Override
 	public void shutDown() {
+		virtualizerHandler.shutDown();
 		jsonEnvironment.shutDown();
+		if (stats != null)
+			stats.saveStats();
 		((JSONDocStoreTopicMapProvider)this.dataProvider).shutDown();
 	}
 	
+	@Override
 	public Map<String,Object> getProperties() {
 		return props;
 	}
 	
+	@Override
 	public String getStringProperty(String key) {
 		return (String)props.get(key);
 	}
+
+	@Override
+	public List<List<String>> getListProperty(String key) {
+		return (List<List<String>>)props.get(key);
+	}
+	
+	public void dumpDatabase() {
+	ITicket credentials = new TicketPojo(ITopicQuestsOntology.SYSTEM_USER);
+	TopicMapXMLExporter exporter = getXMLExporter();
+	PrintWriter writer = null;
+	console.toStatus("Exporting Index");
+	try {
+		File f = new File("TopicMapIndex_"+System.currentTimeMillis()+".xml");
+		FileOutputStream fos = new FileOutputStream(f);
+		BufferedOutputStream bos = new BufferedOutputStream(fos);
+		writer = new PrintWriter(bos);
+		writer.println("<topicmap>");
+		exporter.setListener(new ExportListener(this,writer));
+		exporter.exportXmlTreeFile(ITopicQuestsOntology.TYPE_TYPE, writer, credentials, true);
+	} catch (Exception e) {
+		e.printStackTrace();
+		shutDown();
+	}
+}
+
 	
 	/////////////////////////////
 	// Utilities
@@ -167,4 +280,26 @@ public class JSONTopicmapEnvironment implements IConsoleDisplay {
 			console.toStatus(text);
 	}
 
+}
+
+class ExportListener implements org.topicquests.topicmap.json.model.api.IExporterListener {
+	JSONTopicmapEnvironment host;
+	java.io.PrintWriter writer;
+	
+	public ExportListener(JSONTopicmapEnvironment env, java.io.PrintWriter w) {
+		host = env;
+		writer = w;
+	}
+		@Override
+		public void exportDone() {
+			
+			writer.println("</topicmap>");
+			try {
+				writer.flush();
+				writer.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			host.toStatus("Index Exported");
+		}
 }

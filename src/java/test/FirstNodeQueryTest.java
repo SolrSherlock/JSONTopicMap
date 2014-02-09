@@ -23,13 +23,16 @@ import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IRelationsLegend;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
+import org.topicquests.model.TicketPojo;
 import org.topicquests.model.api.IDataProvider;
 import org.topicquests.model.api.INode;
 import org.topicquests.model.api.INodeModel;
 import org.topicquests.model.api.INodeQuery;
+import org.topicquests.model.api.ITicket;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
 import org.topicquests.topicmap.json.model.NodeQuery;
+import org.topicquests.topicmap.json.model.StatisticsUtility;
 
 /**
  * @author park
@@ -40,7 +43,7 @@ public class FirstNodeQueryTest {
 //	private IJSONDocStoreModel jsonModel;
 ///	private INodeModel nodeModel;
 	private IDataProvider database;
-	private Set<String>credentials;
+	private ITicket credentials;
 	private String userId;
 	private String lang = "en";
 	private String smallImagePath = null;
@@ -62,14 +65,13 @@ public class FirstNodeQueryTest {
 	 * 
 	 */
 	public FirstNodeQueryTest() {
-		environment = new JSONTopicmapEnvironment();
+		environment = new JSONTopicmapEnvironment(new StatisticsUtility());
 //		jsonModel = environment.getJSONModel();
 //		nodeModel = environment.getTopicDataProvider().getNodeModel();
-		database = environment.getTopicDataProvider();
+		database = environment.getDataProvider();
 		//create credentials
-		credentials = new HashSet<String>();
+		credentials = new TicketPojo(ITopicQuestsOntology.SYSTEM_USER);
 		userId = ITopicQuestsOntology.SYSTEM_USER;
-		credentials.add(userId);
 		runTest();
 	}
 	

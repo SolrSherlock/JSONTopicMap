@@ -14,13 +14,14 @@
  * and limitations under the License.
  */
 package org.topicquests.topicmap.json.model;
-
-import java.util.Set;
-
+import java.util.*;
+import org.topicquests.common.api.ITopicQuestsOntology;
+import org.topicquests.model.api.ITicket;
 import org.json.simple.JSONObject;
 import org.topicquests.model.api.IDataProvider;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
 import org.topicquests.util.LoggingPlatform;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  * @author park
@@ -46,10 +47,32 @@ public class CredentialUtility {
 	 * @param credentials
 	 * @return
 	 */
-	public boolean checkCredentials(JSONObject jo, Set<String>credentials) {
-		boolean result = true;
-		//TODO
-		return result;
+	public boolean checkCredentials(JSONObject jo, ITicket credentials) {
+		String o = (String)jo.get(ITopicQuestsOntology.IS_PRIVATE_PROPERTY);
+		if (o.equals("true")) {
+			//same creator?
+			o = (String)jo.get(ITopicQuestsOntology.CREATOR_ID_PROPERTY);
+			if (o.equals(credentials.getUserLocator()))
+				return true;
+			//same avatar?
+			List<String>l = credentials.listAvatars();
+			if (l.contains(o))
+				return true;
+			//check acls
+			l = credentials.listGroupLocators();
+			if (!l.isEmpty()) {
+				Object x = jo.get(ITopicQuestsOntology.RESTRICTION_PROPERTY_TYPE);
+				String y = (String)x;
+				if (x instanceof String) {
+					return (l.contains(y));
+				}
+				List<String>acls = (List<String>)x;
+				Collection<String> intersect = CollectionUtils.intersection(acls, l);
+				return (!intersect.isEmpty());
+			}
+		} else
+			return true;
+		return false;
 	}
 
 }

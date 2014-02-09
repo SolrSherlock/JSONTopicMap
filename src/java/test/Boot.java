@@ -16,6 +16,7 @@
 package test;
 
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
+import org.topicquests.topicmap.json.model.StatisticsUtility;
 
 /**
  * @author park
@@ -28,7 +29,7 @@ public class Boot {
 	 * 
 	 */
 	public Boot() {
-		environment = new JSONTopicmapEnvironment();
+		environment = new JSONTopicmapEnvironment(new StatisticsUtility());
 		
 		environment.shutDown();
 	}

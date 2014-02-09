@@ -27,9 +27,11 @@ import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.api.IDataProvider;
 import org.topicquests.model.api.INode;
 import org.topicquests.model.api.ITuple;
+import org.topicquests.model.api.ITicket;
 import org.topicquests.topicmap.json.model.TopicMapXMLExporter.Worker;
 import org.topicquests.topicmap.json.model.api.IExporterListener;
 import org.topicquests.util.LoggingPlatform;
+import org.json.simple.JSONObject;
 
 /**
  * @author park
@@ -38,7 +40,8 @@ import org.topicquests.util.LoggingPlatform;
  * <li>That will not work because you cannot serialize the object
  * while you are building it</li>
  * </p>
- * @deprecated and unfinished
+ * <p>With JSONPullParsers, we can do this. It's just one giant
+ * JSONArray, e.g. {"classes":[.....]}
  */
 public class TopicMapJSONExporter {
 	public LoggingPlatform log = LoggingPlatform.getLiveInstance();
@@ -59,7 +62,7 @@ public class TopicMapJSONExporter {
 		listener = l;
 	}
 	
-	public IResult exportJSONFile(String treeRootLocator, Writer out, Set<String> credentials, boolean standAlone) {
+	public IResult exportJSONFile(String treeRootLocator, Writer out, ITicket credentials, boolean standAlone) {
 		if (standAlone)
 			loopStopper = new ArrayList<String>();
 		IResult result = new ResultPojo();
@@ -75,11 +78,12 @@ public class TopicMapJSONExporter {
 	class Worker extends Thread {
 		private INode n;
 		private Writer out;
-		private Set<String> credentials;
+		private ITicket  credentials;
 		private int depth;
 		private Object waiter = new Object();
+		private boolean isFirst = true;
 		
-		public Worker(INode n, Writer out, Set<String>credentials, int depth) {
+		public Worker(INode n, Writer out, ITicket credentials, int depth) {
 			this.n = n;
 			this.out = out;
 			this.credentials = credentials;
@@ -88,7 +92,13 @@ public class TopicMapJSONExporter {
 		}
 		
 		public void run() {
-			exportTree(n,out,credentials,depth);
+			try {
+				out.write("[ ");
+				exportTree(n,out,credentials,depth);
+				out.write(" ]");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			if (listener != null)
 				listener.exportDone();
 		}
@@ -101,7 +111,7 @@ public class TopicMapJSONExporter {
 		 * @param depth // for diagnostics
 		 * @return
 		 */
-		private IResult exportTree(INode n, Writer out, Set<String>credentials, int depth) {
+		private IResult exportTree(INode n, Writer out, ITicket credentials, int depth) {
 	/*		synchronized(waiter) {
 				try {
 					waiter.wait(1000);
@@ -109,6 +119,7 @@ public class TopicMapJSONExporter {
 					e.printStackTrace();
 				}
 			} */
+			
 			Thread.yield();
 			String locator = n.getLocator();
 			IResult result = new ResultPojo();
@@ -116,11 +127,14 @@ public class TopicMapJSONExporter {
 				int mydepth = depth++;
 				loopStopper.add(locator);
 				//Export this node
-				String xml = n.toXML();
 				//TODO should check for null string
-				System.out.println(depth+" EXPORT- "+locator+" | "+xml);
+				System.out.println(depth+" EXPORT- "+locator);
 				try {
-					out.write(xml);
+					if (!isFirst)
+						out.write(" , ");
+					else
+						isFirst = false;
+					((JSONObject)n).writeJSONString(out);
 				} catch (Exception e) {
 					//TODO
 					result.addErrorString(e.getMessage());
@@ -129,7 +143,7 @@ public class TopicMapJSONExporter {
 				//What are children? subclasses, instances, IBIS nodes, etc...
 				//Must pick up ITuples as well
 				//we ignore any superclass or parent types; just start here and go down and out
-				int start = 0, count = 50, fetched =50;
+				int start = 0, count = 50, fetched =0;
 				//instances first
 				INode theNode = null; 
 				INode tNode = null;
@@ -228,11 +242,11 @@ public class TopicMapJSONExporter {
 	
 
 	
-	private IResult listInstanceNodes(String locator, int start, int count, Set<String >credentials) {
+	private IResult listInstanceNodes(String locator, int start, int count, ITicket credentials) {
 		System.out.println("LISTINSTANCENODES "+locator);
 		return database.listInstanceNodes(locator, start, count, credentials);
 	}
-	private IResult listSubclassNodes(String locator, int start, int count, Set<String >credentials) {
+	private IResult listSubclassNodes(String locator, int start, int count, ITicket credentials) {
 		return database.listSubclassNodes(locator, start, count, credentials);
 	}
 }

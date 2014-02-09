@@ -32,7 +32,11 @@ public class TestHarness {
 		//new FirstBootTest();
 		//new ExportTest();
 		//new BuildHugeTopicMap();
-		new FirstNodeQueryTest();
+		//new FirstNodeQueryTest();
+		//new SocialBookmarkTest();
+		//new TreeWalkTest();
+		//new PullParserTest();
+		new NewQueryTest_1();
 		System.out.println("Did");
 	}
 

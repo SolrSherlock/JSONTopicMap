@@ -33,15 +33,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.topicquests.common.api.IConsoleDisplay;
+import org.topicquests.model.api.IEnvironment;
 import org.topicquests.persist.json.JSONDocStoreEnvironment;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
+import org.topicquests.topicmap.json.model.StatisticsUtility;
+import org.topicquests.topicmap.json.model.api.IExtendedConsoleDisplay;
 import org.topicquests.util.TextFileHandler;
 /**
  * @author Jack Park
  * @version 1.0
  */
 public class MainFrame
-    extends JFrame implements IConsoleDisplay {
+    extends JFrame implements IExtendedConsoleDisplay {
 	private JSONTopicmapEnvironment environment;
   JPanel contentPane;
   BorderLayout borderLayout1 = new BorderLayout();
@@ -59,12 +62,26 @@ public class MainFrame
   JMenuItem importCarrotFileItem = new JMenuItem();
   JMenuItem importCarrotDirItem = new JMenuItem();
   JMenuItem dumpIndexItem = new JMenuItem();
+  DoubleTreeTab treeTab = new DoubleTreeTab();
+  SuggestedMergeTab mergeTab = new SuggestedMergeTab();
+  StatsTab statsTab = new StatsTab();
+  java.util.List<IEnvironment>environments;
+	private StatisticsUtility stats;
+	private SearchTab searchTab = new SearchTab();
+
  // RdbmsManagerPanel rdbmsPanel = new RdbmsManagerPanel();
  // PhraseAnalysisTab analysisTab = new PhraseAnalysisTab();
  // SentenceEditorTab sentenceTab = new SentenceEditorTab();
  // WordGramEditorTab wordgramTab = new WordGramEditorTab();
 //  StatsTab statsTab = new StatsTab();
   
+	public void addSearchHit(String hit) {
+		searchTab.addSearchHit(hit);
+	}
+	
+	public void setSearchHits(String allHist) {
+		searchTab.setSearchHits(allHist);
+	}
   
   public MainFrame() {
     try {
@@ -73,13 +90,12 @@ public class MainFrame
     	//To exit this program, must use File:Exit
       setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
       jbInit();
-      environment = new JSONTopicmapEnvironment();
+      stats = new StatisticsUtility();
+      environment = new JSONTopicmapEnvironment(stats);
       environment.setConsole(this);
-    //  analysisTab.init(environment);
-   //   statsTab.init(environment);
-   //   sentenceTab.init(environment);
-    //  wordgramTab.init(environment);
-    //  rdbmsPanel.setConnection(environment.getRdbmsDatabase().getConnection());
+      treeTab.setEnvironment(environment);
+      mergeTab.setDataProvider(environment.getDataProvider());
+      searchTab.setEnvironment(environment);
     }
     catch (Exception exception) {
       exception.printStackTrace();
@@ -140,6 +156,10 @@ public class MainFrame
 //    contentPane.add(jToolBar, java.awt.BorderLayout.NORTH);
     contentPane.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     jTabbedPane1.add(consoleTab, "Console");
+    jTabbedPane1.add(treeTab, "Topics");
+    jTabbedPane1.add(searchTab, "Search");
+    jTabbedPane1.add(mergeTab, "Merge Suggestions");
+    jTabbedPane1.add(statsTab, "Statistics");
    // jTabbedPane1.add(sentenceTab,"Sentence Editor");
   //  jTabbedPane1.add(wordgramTab, "WordGram Editor");
   //  jTabbedPane1.add(analysisTab, "Analysis");
@@ -155,7 +175,13 @@ public class MainFrame
    * @param actionEvent ActionEvent
    */
   void jMenuFileExit_actionPerformed(ActionEvent actionEvent) {
-	  environment.shutDown();
+	  if (environment != null)
+		  environment.shutDown();
+	  if (environments != null) {
+		  java.util.Iterator<IEnvironment>itr = environments.iterator();
+		  while(itr.hasNext())
+			  itr.next().shutDown();
+	  }
     System.exit(0);
   }
 
@@ -207,8 +233,36 @@ public class MainFrame
 	  }
   }
   public void dumpItem_actionPerformed(ActionEvent e) {
-	//TODO	  utilityHandler.dumpIndex();
+	environment.dumpDatabase();
   }
+
+	@Override
+	public void addStandaloneTab(String name, JPanel tab) {
+		jTabbedPane1.add(tab,name);	
+	}
+
+	@Override
+	public void addShutDownEnvironments(IEnvironment e) {
+		if (environments == null) {
+			environments = new java.util.ArrayList<IEnvironment>();
+		}
+		environments.add(e);
+	}
+
+	@Override
+	public void setConsoleTitle(String title) {
+		this.setTitle(title);
+	}
+
+	@Override
+	public SuggestedMergeTab getSuggestedMergeTab() {
+		return mergeTab;
+	}
+
+	@Override
+	public SearchTab getSearchTab() {
+		return searchTab;
+	}
 }
 
 class MainFrame_importSolrItem_actionAdapter

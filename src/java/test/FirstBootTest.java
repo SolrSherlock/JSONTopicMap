@@ -19,11 +19,14 @@ import java.util.*;
 
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
+import org.topicquests.model.TicketPojo;
 import org.topicquests.model.api.IDataProvider;
 import org.topicquests.model.api.INode;
 import org.topicquests.model.api.INodeModel;
+import org.topicquests.model.api.ITicket;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
+import org.topicquests.topicmap.json.model.StatisticsUtility;
 
 /**
  * @author park
@@ -34,25 +37,24 @@ public class FirstBootTest {
 	private IJSONDocStoreModel jsonModel;
 	private INodeModel nodeModel;
 	private IDataProvider database;
-	private Set<String>credentials;
+	private ITicket credentials;
 	/**
 	 * 
 	 */
 	public FirstBootTest() {
-		environment = new JSONTopicmapEnvironment();
+		environment = new JSONTopicmapEnvironment(new StatisticsUtility());
 		jsonModel = environment.getJSONModel();
-		nodeModel = environment.getTopicDataProvider().getNodeModel();
-		database = environment.getTopicDataProvider();
+		nodeModel = environment.getDataProvider().getNodeModel();
+		database = environment.getDataProvider();
 		//create credentials
-		credentials = new HashSet<String>();
-		credentials.add(ITopicQuestsOntology.SYSTEM_USER);
+		credentials = new TicketPojo(ITopicQuestsOntology.SYSTEM_USER);
 		String firstId = "FirstTopic";
 		String user = ITopicQuestsOntology.SYSTEM_USER;
 		//newNode(String locator,String label, String description, String lang, 
 		//  String userId, String smallImagePath, String largeImagePath, boolean isPrivate);
-		IResult r = nodeModel.newNode(firstId, "My very first topic", 
+		IResult r;
+		INode n1 = nodeModel.newNode(firstId, "My very first topic", 
 				"Something to think about", "en", user, null, null, false);
-		INode n1 = (INode)r.getResultObject();
 		System.out.println("FBT-0 "+n1.toJSON());
 		r = database.putNode(n1);
 		System.out.println("FBT-1 "+r.getErrorString());

@@ -15,12 +15,18 @@
  */
 package org.topicquests.topicmap.json.model;
 
-import java.util.Set;
+import java.util.*;
 
+
+import org.topicquests.model.api.ITicket;
+import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.model.api.IDataProvider;
+import org.topicquests.model.api.INode;
+import org.topicquests.model.Node;
 import org.topicquests.model.api.IQueryIterator;
-
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 /**
  * @author park
  *
@@ -31,14 +37,14 @@ public class QueryIterator implements IQueryIterator {
 	private String _query;
 	private int _count;
 	private int _cursor;
-	private Set<String>_credentials;
+	private ITicket _credentials;
 
 	/**
 	 * 
 	 */
 	public QueryIterator(JSONTopicmapEnvironment env) {
 		environment = env;
-		database = environment.getTopicDataProvider();
+		database = environment.getDataProvider();
 		
 	}
 
@@ -46,7 +52,7 @@ public class QueryIterator implements IQueryIterator {
 	 * @see org.topicquests.model.api.IQueryIterator#start(java.lang.String, int, java.util.Set)
 	 */
 	@Override
-	public void start(String queryString, int hitCount, Set<String> credentials) {
+	public void start(String queryString, int hitCount, ITicket credentials) {
 		_query = queryString;
 		_count = hitCount;
 		_cursor = 0;
@@ -84,7 +90,32 @@ public class QueryIterator implements IQueryIterator {
 	}
 	
 	private IResult runQuery() {
-		return database.runQuery(_query, _cursor, _count, _credentials);
+		IResult x = database.runQuery(_query, _cursor, _count, _credentials);
+		IResult result = new ResultPojo();
+		List<String>jsonStrings = (List<String>)x.getResultObject();
+		if (x.hasError())
+			result.addErrorString(x.getErrorString());
+		if (jsonStrings != null && !jsonStrings.isEmpty()) {
+			JSONParser p = new JSONParser();
+			List<INode>nodes = new ArrayList<INode>();
+			result.setResultObject(nodes);
+			try {
+				String json;
+				JSONObject jo;
+				Iterator<String>itr = jsonStrings.iterator();
+				while (itr.hasNext()) {
+					json = itr.next();
+					jo = (JSONObject)p.parse(json);
+					nodes.add(new Node(jo));
+				}
+				
+			} catch (Exception e) {
+				environment.logError(e.getMessage(), e);
+				result.addErrorString(e.getMessage());
+			}
+		}
+
+		return result;
 	}
 
 }

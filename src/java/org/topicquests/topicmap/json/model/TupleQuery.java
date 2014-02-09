@@ -25,14 +25,15 @@ import org.json.simple.parser.JSONParser;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
-import org.topicquests.model.Node;
 import org.topicquests.model.api.IDataProvider;
+import org.topicquests.model.api.ITicket;
 import org.topicquests.model.api.INode;
 import org.topicquests.model.api.ITuple;
 import org.topicquests.model.api.ITupleQuery;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
 import org.topicquests.topicmap.json.model.api.IJSONTopicMapOntology;
 import org.topicquests.util.LoggingPlatform;
+import org.topicquests.model.Node;
 
 /**
  * @author park
@@ -43,7 +44,7 @@ public class TupleQuery implements ITupleQuery {
 	private IDataProvider database;
 	private IJSONDocStoreModel jsonModel;
 	private CredentialUtility credentialUtil;
-	private JSONParser parser;
+//	private JSONParser parser;
 	private final String
 		//defined in jsonblobstore-props.xml
 		TOPIC_INDEX		= IJSONTopicMapOntology.TOPIC_INDEX,
@@ -55,7 +56,7 @@ public class TupleQuery implements ITupleQuery {
 	public TupleQuery(IDataProvider d, IJSONDocStoreModel j) {
 		database = d;
 		jsonModel = j;
-		parser = new JSONParser();
+//		parser = new JSONParser();
 		credentialUtil = new CredentialUtility(database,jsonModel);
 	}
 
@@ -63,14 +64,14 @@ public class TupleQuery implements ITupleQuery {
 	 * @see org.topicquests.model.api.ITupleQuery#listObjectNodesByRelationAndObjectRole(java.lang.String, java.lang.String, int, int, java.util.Set)
 	 */
 	@Override
-	public IResult listObjectNodesByRelationAndObjectRole(String relationLocator, String objectRoleLocator, int start, int count, Set<String>credentials) {
+	public IResult listObjectNodesByRelationAndObjectRole(String relationLocator, String objectRoleLocator, int start, int count, ITicket credentials) {
 		BoolQueryBuilder qba = QueryBuilders.boolQuery();
 		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, relationLocator);
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_OBJECT_ROLE_PROPERTY, objectRoleLocator);
 		qba.must(qb1);
 		qba.must(qb2);		
 		log.logDebug("TupleQuery.listObjectNodesByRelationAndObjectRole- "+qba.toString());
-		IResult result =  this.plucktNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
+		IResult result =  this.pluckNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
 		return result;
 	}
 
@@ -78,14 +79,14 @@ public class TupleQuery implements ITupleQuery {
 	 * @see org.topicquests.model.api.ITupleQuery#listObjectNodesByRelationAndSubjectRole(java.lang.String, java.lang.String, int, int, java.util.Set)
 	 */
 	@Override
-	public IResult listObjectNodesByRelationAndSubjectRole(String relationLocator, String subjectRoleLocator, int start, int count, Set<String>credentials) {
+	public IResult listObjectNodesByRelationAndSubjectRole(String relationLocator, String subjectRoleLocator, int start, int count, ITicket credentials) {
 		BoolQueryBuilder qba = QueryBuilders.boolQuery();
 		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, relationLocator);
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_SUBJECT_ROLE_PROPERTY, subjectRoleLocator);
 		qba.must(qb1);
 		qba.must(qb2);		
 		log.logDebug("TupleQuery.listObjectNodesByRelationAndSubjectRole- "+qba.toString());
-		IResult result =  this.plucktNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
+		IResult result =  this.pluckNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
 		return result;
 	}
 
@@ -93,14 +94,14 @@ public class TupleQuery implements ITupleQuery {
 	 * @see org.topicquests.model.api.ITupleQuery#listObjectNodesBySubjectAndRelation(java.lang.String, java.lang.String, int, int, java.util.Set)
 	 */
 	@Override
-	public IResult listObjectNodesBySubjectAndRelation(String subjectLocator, String relationLocator, int start, int count, Set<String>credentials) {
+	public IResult listObjectNodesBySubjectAndRelation(String subjectLocator, String relationLocator, int start, int count, ITicket credentials) {
 		BoolQueryBuilder qba = QueryBuilders.boolQuery();
 		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, relationLocator);
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, subjectLocator);
 		qba.must(qb1);
 		qba.must(qb2);		
 		log.logDebug("TupleQuery.listObjectNodesBySubjectAndRelation- "+qba.toString());
-		IResult result =  this.plucktNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
+		IResult result =  this.pluckNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
 		return result;
 	}
 
@@ -108,7 +109,7 @@ public class TupleQuery implements ITupleQuery {
 	 * @see org.topicquests.model.api.ITupleQuery#listObjectNodesBySubjectAndRelationAndScope(java.lang.String, java.lang.String, java.lang.String, int, int, java.util.Set)
 	 */
 	@Override
-	public IResult listObjectNodesBySubjectAndRelationAndScope(String subjectLocator, String relationLocator, String scopeLocator, int start, int count, Set<String>credentials) {
+	public IResult listObjectNodesBySubjectAndRelationAndScope(String subjectLocator, String relationLocator, String scopeLocator, int start, int count, ITicket credentials) {
 		BoolQueryBuilder qba = QueryBuilders.boolQuery();
 		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, relationLocator);
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, subjectLocator);
@@ -117,7 +118,7 @@ public class TupleQuery implements ITupleQuery {
 		qba.must(qb2);	
 		qba.must(qb3);
 		log.logDebug("TupleQuery.listObjectNodesBySubjectAndRelationAndScope- "+qba.toString());
-		IResult result =  this.plucktNodes(qba, ITopicQuestsOntology.TUPLE_OBJECT_PROPERTY, start, credentials, count);
+		IResult result =  this.pluckNodes(qba, ITopicQuestsOntology.TUPLE_OBJECT_PROPERTY, start, credentials, count);
 		return result;
 	}
 
@@ -125,14 +126,14 @@ public class TupleQuery implements ITupleQuery {
 	 * @see org.topicquests.model.api.ITupleQuery#listSubjectNodesByObjectAndRelation(java.lang.String, java.lang.String, int, int, java.util.Set)
 	 */
 	@Override
-	public IResult listSubjectNodesByObjectAndRelation(String objectLocator, String relationLocator, int start, int count, Set<String>credentials) {
+	public IResult listSubjectNodesByObjectAndRelation(String objectLocator, String relationLocator, int start, int count, ITicket credentials) {
 		BoolQueryBuilder qba = QueryBuilders.boolQuery();
 		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, relationLocator);
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_OBJECT_PROPERTY, objectLocator);
 		qba.must(qb1);
 		qba.must(qb2);		
 		log.logDebug("TupleQuery.listSubjectNodesByObjectAndRelation- "+qba.toString());
-		IResult result =  this.plucktNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
+		IResult result =  this.pluckNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
 		return result;
 	}
 
@@ -140,7 +141,7 @@ public class TupleQuery implements ITupleQuery {
 	 * @see org.topicquests.model.api.ITupleQuery#listSubjectNodesByObjectAndRelationAndScope(java.lang.String, java.lang.String, java.lang.String, int, int, java.util.Set)
 	 */
 	@Override
-	public IResult listSubjectNodesByObjectAndRelationAndScope(String objectLocator, String relationLocator, String scopeLocator, int start, int count, Set<String>credentials) {
+	public IResult listSubjectNodesByObjectAndRelationAndScope(String objectLocator, String relationLocator, String scopeLocator, int start, int count, ITicket credentials) {
 		BoolQueryBuilder qba = QueryBuilders.boolQuery();
 		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, relationLocator);
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_OBJECT_PROPERTY, objectLocator);
@@ -149,7 +150,7 @@ public class TupleQuery implements ITupleQuery {
 		qba.must(qb2);	
 		qba.must(qb3);
 		log.logDebug("TupleQuery.listSubjectNodesByObjectAndRelationAndScope- "+qba.toString());
-		IResult result =  this.plucktNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
+		IResult result =  this.pluckNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
 		return result;
 	}
 
@@ -157,14 +158,14 @@ public class TupleQuery implements ITupleQuery {
 	 * @see org.topicquests.model.api.ITupleQuery#listSubjectNodesByRelationAndObjectRole(java.lang.String, java.lang.String, int, int, java.util.Set)
 	 */
 	@Override
-	public IResult listSubjectNodesByRelationAndObjectRole(String relationLocator, String objectRoleLocator, int start, int count, Set<String>credentials) {
+	public IResult listSubjectNodesByRelationAndObjectRole(String relationLocator, String objectRoleLocator, int start, int count, ITicket credentials) {
 		BoolQueryBuilder qba = QueryBuilders.boolQuery();
 		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, relationLocator);
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_OBJECT_ROLE_PROPERTY, objectRoleLocator);
 		qba.must(qb1);
 		qba.must(qb2);		
 		log.logDebug("TupleQuery.listSubjectNodesByRelationAndObjectRole- "+qba.toString());
-		IResult result =  this.plucktNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
+		IResult result =  this.pluckNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
 		return result;
 	}
 
@@ -172,14 +173,14 @@ public class TupleQuery implements ITupleQuery {
 	 * @see org.topicquests.model.api.ITupleQuery#listSubjectNodesByRelationAndSubjectRole(java.lang.String, java.lang.String, int, int, java.util.Set)
 	 */
 	@Override
-	public IResult listSubjectNodesByRelationAndSubjectRole(String relationLocator, String subjectRoleLocator, int start, int count, Set<String>credentials) {
+	public IResult listSubjectNodesByRelationAndSubjectRole(String relationLocator, String subjectRoleLocator, int start, int count, ITicket credentials) {
 		BoolQueryBuilder qba = QueryBuilders.boolQuery();
 		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, relationLocator);
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_SUBJECT_ROLE_PROPERTY, subjectRoleLocator);
 		qba.must(qb1);
 		qba.must(qb2);		
 		log.logDebug("TupleQuery.listSubjectNodesByRelationAndSubjectRole- "+qba.toString());
-		IResult result =  this.plucktNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
+		IResult result =  this.pluckNodes(qba, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, start, credentials, count);
 		return result;
 	}
 
@@ -188,7 +189,7 @@ public class TupleQuery implements ITupleQuery {
 	 */
 	@Override
 	public IResult listTuplesByObjectLocator(String objectLocator, int start, int count,
-			Set<String> credentials) {
+			ITicket  credentials) {
 		IResult result = jsonModel.listDocumentsByProperty(TOPIC_INDEX, ITopicQuestsOntology.TUPLE_OBJECT_PROPERTY, 
 				objectLocator, start, count, CORE_TYPE);
 		if (result.getResultObject() != null) {
@@ -219,7 +220,7 @@ public class TupleQuery implements ITupleQuery {
 	 * @see org.topicquests.model.api.ITupleQuery#listTuplesByPredTypeAndObject(java.lang.String, java.lang.String, int, int, java.util.Set)
 	 */
 	@Override
-	public IResult listTuplesByPredTypeAndObject(String predType, String obj, int start, int count, Set<String> credentials) {
+	public IResult listTuplesByPredTypeAndObject(String predType, String obj, int start, int count, ITicket  credentials) {
 		BoolQueryBuilder qba = QueryBuilders.boolQuery();
 		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, predType);
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_OBJECT_PROPERTY, obj);
@@ -263,7 +264,7 @@ public class TupleQuery implements ITupleQuery {
 	 * @param count TODO
 	 * @return <code>null</code> or <code>List<INode></code>
 	 */
-	private IResult plucktNodes(QueryBuilder qb, String type, int start, Set<String>credentials, int count) {
+	private IResult pluckNodes(QueryBuilder qb, String type, int start, ITicket credentials, int count) {
 		IResult result =  jsonModel.runQuery(TOPIC_INDEX, qb, 0, -1, CORE_TYPE);
 		if (result.getResultObject() != null) {
 			result.setResultObject(null);
@@ -303,7 +304,7 @@ public class TupleQuery implements ITupleQuery {
 	 */
 	@Override
 	public IResult listTuplesBySubject(String subjectLocator, int start, int count,
-			Set<String> credentials) {
+			ITicket  credentials) {
 		//listDocumentsByProperty(String index, String key, String value, int start, int count, String... types)
 		IResult result = jsonModel.listDocumentsByProperty(TOPIC_INDEX, ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, 
 				subjectLocator, start, count, CORE_TYPE);
@@ -335,7 +336,7 @@ public class TupleQuery implements ITupleQuery {
 	 * @see org.topicquests.model.api.ITupleQuery#listTuplesBySubjectAndPredType(java.lang.String, java.lang.String, int, int, java.util.Set)
 	 */
 	@Override
-	public IResult listTuplesBySubjectAndPredType(String subjectLocator, String predType, int start, int count, Set<String> credentials) {
+	public IResult listTuplesBySubjectAndPredType(String subjectLocator, String predType, int start, int count, ITicket  credentials) {
 		BoolQueryBuilder qba = QueryBuilders.boolQuery();
 		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, predType);
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY, subjectLocator);
@@ -371,18 +372,18 @@ public class TupleQuery implements ITupleQuery {
 	}
 
 	private JSONObject jsonToJSON(String json) throws Exception {
-		return (JSONObject)parser.parse(json);
+		return (JSONObject)new JSONParser().parse(json);
 	}
 
 	@Override
-	public IResult listTuplesByLabel(String [] labels, int start, int count, Set<String> credentials) {
+	public IResult listTuplesByLabel(String [] labels, int start, int count, ITicket  credentials) {
 		IResult result = new ResultPojo();
 		BoolQueryBuilder qba =null;
 		QueryBuilder qb1 = null;
 		QueryBuilder qb2 =null;
 		ITuple t;
 		IResult r;
-		Set<String>subresult = new HashSet<String>();
+		Set<String> subresult = new HashSet<String> ();
 		for (String lax: labels) {
 			qba = QueryBuilders.boolQuery();
 			qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.LABEL_PROPERTY, lax);
@@ -407,7 +408,7 @@ public class TupleQuery implements ITupleQuery {
 
 	@Override
 	public IResult listTuplesByPredTypeAndObjectOrSubject(String predType,
-			String obj, int start, int count, Set<String> credentials) {
+			String obj, int start, int count, ITicket  credentials) {
 		BoolQueryBuilder qba = QueryBuilders.boolQuery();
 		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, predType);
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_OBJECT_PROPERTY, obj);

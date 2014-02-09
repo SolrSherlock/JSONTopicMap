@@ -15,9 +15,8 @@
  */
 package test;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import org.topicquests.model.TicketPojo;
+import org.topicquests.model.api.ITicket;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IRelationsLegend;
 import org.topicquests.common.api.IResult;
@@ -29,6 +28,7 @@ import org.topicquests.model.api.INodeModel;
 import org.topicquests.model.api.ITuple;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
+import org.topicquests.topicmap.json.model.StatisticsUtility;
 
 /**
  * @author park
@@ -39,7 +39,7 @@ public class BuildHugeTopicMap {
 	private IJSONDocStoreModel jsonModel;
 	private INodeModel nodeModel;
 	private IDataProvider database;
-	private Set<String>credentials;
+	private ITicket credentials;
 	private String userId;
 	private String lang = "en";
 	private String smallImagePath = null;
@@ -61,14 +61,13 @@ public class BuildHugeTopicMap {
 	 * 
 	 */
 	public BuildHugeTopicMap() {
-		environment = new JSONTopicmapEnvironment();
+		environment = new JSONTopicmapEnvironment(new StatisticsUtility());
 		jsonModel = environment.getJSONModel();
-		nodeModel = environment.getTopicDataProvider().getNodeModel();
-		database = environment.getTopicDataProvider();
+		nodeModel = environment.getDataProvider().getNodeModel();
+		database = environment.getDataProvider();
 		//create credentials
-		credentials = new HashSet<String>();
+		credentials = new TicketPojo(ITopicQuestsOntology.SYSTEM_USER);
 		userId = ITopicQuestsOntology.SYSTEM_USER;
-		credentials.add(userId);
 		buildTM();
 	}
 	
@@ -77,33 +76,27 @@ public class BuildHugeTopicMap {
 		//newSubclassNode(String locator,String superclassLocator,String label, 
 		//  String description, String lang, String userId, String smallImagePath, 
 		//  String largeImagePath, boolean isPrivate)
-		IResult r = nodeModel.newSubclassNode(ATMOSPHERIC_EVENT_TYPE, IEventLegend.EVENT_TYPE, "Atmospheric Event", 
+		IResult r;
+		INode x = nodeModel.newSubclassNode(ATMOSPHERIC_EVENT_TYPE, IEventLegend.EVENT_TYPE, "Atmospheric Event", 
 				"Events related to atmospheric conditions, weather, and climate", lang, userId, smallImagePath, largeImagePath, isPrivate);
-		INode x = (INode)r.getResultObject();
 		r = database.putNode(x);
-		if (r.hasError())
-			result.addErrorString(r.getErrorString());
-		r = nodeModel.newSubclassNode(CLIMATE_CHANGE, ATMOSPHERIC_EVENT_TYPE, "Climate Change", 
+		INode cc = nodeModel.newSubclassNode(CLIMATE_CHANGE, ATMOSPHERIC_EVENT_TYPE, "Climate Change", 
 				"Major changes in climate", lang, userId, smallImagePath, largeImagePath, isPrivate);
-		INode cc =  (INode)r.getResultObject();
 		r = database.putNode(cc);
 		if (r.hasError())
 			result.addErrorString(r.getErrorString());
-		r = nodeModel.newSubclassNode(MOLECULE_TYPE, ITopicQuestsOntology.CLASS_TYPE, "Molecule Type", 
+		INode y = nodeModel.newSubclassNode(MOLECULE_TYPE, ITopicQuestsOntology.CLASS_TYPE, "Molecule Type", 
 				"Substances composed of many atoms", lang, userId, smallImagePath, largeImagePath, isPrivate);
-		INode y = (INode)r.getResultObject();
 		r = database.putNode(y);
 		if (r.hasError())
 			result.addErrorString(r.getErrorString());
-		r = nodeModel.newSubclassNode(CO2_TYPE, MOLECULE_TYPE, "CO2", 
+		INode co2 = nodeModel.newSubclassNode(CO2_TYPE, MOLECULE_TYPE, "CO2", 
 				"Carbon dioxide", lang, userId, smallImagePath, largeImagePath, isPrivate);
-		INode co2 = (INode)r.getResultObject();
 		r = database.putNode(co2);
 		if (r.hasError())
 			result.addErrorString(r.getErrorString());
-		r = nodeModel.newSubclassNode(METHANE_TYPE, MOLECULE_TYPE, "Methane", 
+		INode methane = nodeModel.newSubclassNode(METHANE_TYPE, MOLECULE_TYPE, "Methane", 
 				"Methane", lang, userId, smallImagePath, largeImagePath, isPrivate);
-		INode methane = (INode)r.getResultObject();
 		r = database.putNode(methane);
 		if (r.hasError())
 			result.addErrorString(r.getErrorString());

@@ -26,10 +26,11 @@
 		 -->
 	<parameter name="DataProviderClass" value = "org.topicquests.topicmap.json.persist.JSONDocStoreTopicMapProvider" />
 	
-	<!-- Select either stand-alone client or SolrCloud client
-	 -->
-<!-- 	<parameter name="SolrClient" value="org.topicquests.solr.Solr3Client" /> -->
-	<parameter name="SolrClient" value="org.topicquests.solr.SolrCloudClient" />  
+	<!-- 
+		Allows for plugin IVirtualizer
+		 -->
+	<parameter name="VirtualizerClass" value = "org.topicquests.topicmap.json.merge.DefaultVirtualizer" />
+	
 	<!-- 
 		The core TopicQuests topic map platform has an internal merge function which
 		is plug-in swappable. "MergeImplementation" is the key to get the
