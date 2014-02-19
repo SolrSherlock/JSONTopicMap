@@ -56,6 +56,7 @@ public class StatisticsUtility {
 
 
 	public String getStats() {
+		System.out.println("GETSTATS "+data);
 		synchronized(data) {
 			StringBuffer buf = new StringBuffer();
 			Long x = null;

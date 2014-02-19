@@ -28,13 +28,14 @@ import org.topicquests.topicmap.ui.MainFrame;
  */
 public class Main {
   boolean packFrame = false;
+  private  MainFrame frame;
 
   /**
    * Construct and show the application.
    */
   public Main() {
    //   PropertyConfigurator.configure("logger.properties");
-    MainFrame frame = new MainFrame();
+    frame = new MainFrame();
     // Validate frames that have preset sizes
     // Pack frames that have useful preferred size info, e.g. from their layout
     if (packFrame) {

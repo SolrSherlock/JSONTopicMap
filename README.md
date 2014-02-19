@@ -16,7 +16,7 @@ The file ExportTest1385517929160.xml is the result of the ExportTest. This shows
 This is a really early release; lots to do, but tests show it is possible to build a topic map and use the INodeQuery object to navigate. Many more tests will be added.
 
 ## Update History ##
-20140219 No code changes: added a run.bat file and an installation manual.
+20140219 Fixed missing StatsTab initialization: added a run.bat file and an installation manual.
 
 20140218 No code changes: added a UML diagram of the classes.
 

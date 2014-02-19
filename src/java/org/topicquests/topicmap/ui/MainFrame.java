@@ -96,6 +96,7 @@ public class MainFrame
       treeTab.setEnvironment(environment);
       mergeTab.setDataProvider(environment.getDataProvider());
       searchTab.setEnvironment(environment);
+      statsTab.init(environment);
     }
     catch (Exception exception) {
       exception.printStackTrace();

@@ -161,6 +161,7 @@ public class JSONTopicmapEnvironment
 	}
 	
 	public StatisticsUtility getStats() {
+		System.out.println("RETURN STATS "+stats);
 		return stats;
 	}
 	
