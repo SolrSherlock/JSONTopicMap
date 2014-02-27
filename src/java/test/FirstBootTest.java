@@ -20,13 +20,13 @@ import java.util.*;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.TicketPojo;
-import org.topicquests.model.api.IDataProvider;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.INodeModel;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.node.INodeModel;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
 import org.topicquests.topicmap.json.model.StatisticsUtility;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 
 /**
  * @author park
@@ -36,7 +36,7 @@ public class FirstBootTest {
 	private JSONTopicmapEnvironment environment;
 	private IJSONDocStoreModel jsonModel;
 	private INodeModel nodeModel;
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 	private ITicket credentials;
 	/**
 	 * 
@@ -45,7 +45,7 @@ public class FirstBootTest {
 		environment = new JSONTopicmapEnvironment(new StatisticsUtility());
 		jsonModel = environment.getJSONModel();
 		nodeModel = environment.getDataProvider().getNodeModel();
-		database = environment.getDataProvider();
+		database = (IJSONTopicDataProvider)environment.getDataProvider();
 		//create credentials
 		credentials = new TicketPojo(ITopicQuestsOntology.SYSTEM_USER);
 		String firstId = "FirstTopic";

@@ -9,11 +9,11 @@ import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.TicketPojo;
-import org.topicquests.model.api.IDataProvider;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.INodeModel;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.node.INodeModel;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.topicmap.json.model.api.ISameLabelListener;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
 
@@ -23,7 +23,7 @@ import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
  */
 public class SameLabelMergeHandler {
 	private JSONTopicmapEnvironment environment;
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 	private IJSONDocStoreModel jsonModel;
 	private INodeModel nodeModel;
 	private ITicket credentials;
@@ -35,7 +35,7 @@ public class SameLabelMergeHandler {
 	 */
 	public SameLabelMergeHandler(JSONTopicmapEnvironment env) {
 		environment = env;
-		database = environment.getDataProvider();
+		database = (IJSONTopicDataProvider)environment.getDataProvider();
 		nodeModel = database.getNodeModel();
 		credentials = new TicketPojo(ITopicQuestsOntology.SYSTEM_USER);
 		virtualizerHandler = environment.getVirtualizerHandler();

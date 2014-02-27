@@ -24,12 +24,12 @@ import java.util.Set;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
-import org.topicquests.model.api.IDataProvider;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.ITuple;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.node.ITuple;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.topicmap.json.model.TopicMapXMLExporter.Worker;
 import org.topicquests.topicmap.json.model.api.IExporterListener;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.util.LoggingPlatform;
 import org.json.simple.JSONObject;
 
@@ -46,14 +46,14 @@ import org.json.simple.JSONObject;
 public class TopicMapJSONExporter {
 	public LoggingPlatform log = LoggingPlatform.getLiveInstance();
 
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 	private IExporterListener listener = null;
 	private List<String> loopStopper = null;
 
 	/**
 	 * 
 	 */
-	public TopicMapJSONExporter(IDataProvider db) {
+	public TopicMapJSONExporter(IJSONTopicDataProvider db) {
 		database = db;
 		loopStopper = new ArrayList<String>();
 	}

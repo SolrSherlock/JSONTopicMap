@@ -16,12 +16,12 @@ import org.topicquests.common.api.INodeTypes;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.TicketPojo;
-import org.topicquests.model.api.IDataProvider;
 import org.topicquests.model.api.IEnvironment;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.INodeModel;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.node.INodeModel;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.topicmap.json.model.api.IJSONTopicMapOntology;
 import org.topicquests.topicmap.json.model.api.ISocialBookmarkLegend;
 import org.topicquests.topicmap.json.model.api.ISocialBookmarkModel;
@@ -34,7 +34,7 @@ import org.topicquests.model.Node;
 public class SocialBookmarkModel implements ISocialBookmarkModel {
 	private final String TAG_SUFFIX = "_TAG";
 	private JSONTopicmapEnvironment environment;
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 	private IJSONDocStoreModel jsonModel;
 	private INodeModel nodeModel;
 	private ITicket credentials;
@@ -48,7 +48,7 @@ public class SocialBookmarkModel implements ISocialBookmarkModel {
 	 */
 	public SocialBookmarkModel(JSONTopicmapEnvironment env) {
 		environment = env;
-		database = environment.getDataProvider();
+		database = (IJSONTopicDataProvider)environment.getDataProvider();
 		nodeModel = database.getNodeModel();
 		jsonModel = environment.getJSONModel();
 //		parser = new JSONParser();

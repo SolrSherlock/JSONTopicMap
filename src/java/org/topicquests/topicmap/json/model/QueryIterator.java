@@ -21,10 +21,10 @@ import java.util.*;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
-import org.topicquests.model.api.IDataProvider;
-import org.topicquests.model.api.INode;
+import org.topicquests.model.api.provider.ITopicDataProvider;
+import org.topicquests.model.api.node.INode;
 import org.topicquests.model.Node;
-import org.topicquests.model.api.IQueryIterator;
+import org.topicquests.model.api.query.IQueryIterator;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 /**
@@ -33,7 +33,7 @@ import org.json.simple.parser.JSONParser;
  */
 public class QueryIterator implements IQueryIterator {
 	private JSONTopicmapEnvironment environment;
-	private IDataProvider database;
+	private ITopicDataProvider database;
 	private String _query;
 	private int _count;
 	private int _cursor;
@@ -44,7 +44,7 @@ public class QueryIterator implements IQueryIterator {
 	 */
 	public QueryIterator(JSONTopicmapEnvironment env) {
 		environment = env;
-		database = environment.getDataProvider();
+		database = (ITopicDataProvider)environment.getDataProvider();
 		
 	}
 

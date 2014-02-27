@@ -7,7 +7,7 @@ import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IBootstrap;
 import org.topicquests.common.api.IResult;
 import org.topicquests.model.BootstrapBase;
-import org.topicquests.model.api.IDataProvider;
+import org.topicquests.model.api.provider.ITopicDataProvider;
 
 /**
  * @author park
@@ -15,7 +15,7 @@ import org.topicquests.model.api.IDataProvider;
  */
 public class LocalBootstrap extends BootstrapBase implements IBootstrap {
 
-	public LocalBootstrap(IDataProvider db) {
+	public LocalBootstrap(ITopicDataProvider db) {
 		super(db);
 	}
 	

@@ -35,12 +35,14 @@ import org.topicquests.common.api.IMergeRuleMethod;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.Environment;
+import org.topicquests.model.api.IEnvironment;
 import org.topicquests.model.api.IMergeImplementation;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.INodeModel;
-import org.topicquests.model.api.INodeQuery;
-import org.topicquests.model.api.ITuple;
-import org.topicquests.model.api.ITupleQuery;
+import org.topicquests.model.api.node.IAddressableInformationResource;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.node.INodeModel;
+import org.topicquests.model.api.query.INodeQuery;
+import org.topicquests.model.api.node.ITuple;
+import org.topicquests.model.api.query.ITupleQuery;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.model.Node;
 import org.topicquests.model.api.IXMLFields;
@@ -54,7 +56,7 @@ import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
 import org.topicquests.topicmap.json.model.NodeQuery;
 import org.topicquests.topicmap.json.model.TopicMapXMLExporter;
 import org.topicquests.topicmap.json.model.TupleQuery;
-import org.topicquests.topicmap.json.model.api.IJSONDataProvider;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.topicmap.json.model.api.IJSONTopicMapOntology;
 import org.topicquests.topicmap.json.model.api.IMergeResultsListener;
 import org.topicquests.topicmap.json.model.api.ITreeNode;
@@ -67,7 +69,7 @@ import org.topicquests.topicmap.json.model.NodeModel;
  * @author park
  *
  */
-public class JSONDocStoreTopicMapProvider implements IJSONDataProvider {
+public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	private JSONTopicmapEnvironment environment;
 	private JSONDocStoreEnvironment jsonEnvironment;
 	private IJSONDocStoreModel jsonModel;
@@ -283,11 +285,10 @@ public class JSONDocStoreTopicMapProvider implements IJSONDataProvider {
 	@Override
 	public IResult nodeIsA(String nodeLocator, String targetTypeLocator,
 			ITicket  credentials) {
-		IResult result = walkUpTransitiveClosure(nodeLocator,targetTypeLocator,credentials);
-		if (result.getResultObject() != null)
-			result.setResultObject(new Boolean(true));
-		else
-			result.setResultObject(new Boolean(false));
+		IResult result = this.getNode(nodeLocator, credentials);
+		INode n = (INode)result.getResultObject();
+		boolean t = n.isA(targetTypeLocator);
+		result.setResultObject(new Boolean(t));
 		return result;
 	}
 
@@ -725,15 +726,6 @@ public class JSONDocStoreTopicMapProvider implements IJSONDataProvider {
 		return this.listNodesByQuery(queryString, start, count, credentials);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.topicquests.model.api.IDataProvider#init(org.topicquests.model.Environment, int)
-	 */
-	@Override
-	public IResult init(Environment env, int cachesize) {
-		IResult result = new ResultPojo();
-		//NOT USED
-		return result;
-	}
 
 	/* (non-Javadoc)
 	 * @see org.topicquests.model.api.IDataProvider#getNodeModel()
@@ -806,8 +798,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONDataProvider {
 	 * @param typeTargetLocator
 	 * @param credentials
 	 * @return IResult.returnObject = <code>null</code> if not found. Any non-null means found
-	 */
-	IResult walkUpTransitiveClosure(String locator, String typeTargetLocator, ITicket credentials) {
+	 * /
+	private IResult walkUpTransitiveClosure(String locator, String typeTargetLocator, ITicket credentials) {
 		IResult result = new ResultPojo();
 		result.setResultObject(null);
 		IResult temp = getNode(locator,credentials);
@@ -848,15 +840,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONDataProvider {
 		}
 		return result;
 	}
-	
-	public void shutDown() {
-		this.interceptor.shutDown();
-	}
-
-	@Override
-	public INodeQuery getNodeQuery(INode node) {
-		return new NodeQuery(node,this,jsonModel);
-	}
+	*/
 
 	@Override
 	public void updateNodeFromXML(String nodeXML) {
@@ -864,6 +848,9 @@ public class JSONDocStoreTopicMapProvider implements IJSONDataProvider {
 		
 	}
 	
+	/////////////////////////////////
+	// Tree Support
+
 	private List<String>loopStopper = null;
 	@Override
 	public IResult loadTree(String rootNodeLocator, int maxDepth,
@@ -933,9 +920,77 @@ public class JSONDocStoreTopicMapProvider implements IJSONDataProvider {
 		}
 		
 	}
+	/////////////////////////////////
+	// AIRs
+	@Override
+	public IResult getAIRVersion(String airLocator, int version, ITicket credentials) {
+		String lox = makeAIRLocator(airLocator,Integer.toBinaryString(version));
+		IResult result = jsonModel.getDocument(IJSONTopicDataProvider.AIR_INDEX, CORE_TYPE, lox);
+		if (result.getResultObject() != null) {
+			try {
+				JSONObject json = this.jsonToJSON((String)result.getResultObject());
+				IAddressableInformationResource a = new Node(json);
+				result.setResultObject(a);
+			} catch (Exception e) {
+				environment.logError(e.getMessage(), e);
+				result.addErrorString(e.getMessage());
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public IResult listAIRVersions(String airLocator) {
+		IResult result = jsonModel.listDocumentsByKeywordProperty(IJSONTopicDataProvider.AIR_INDEX, 
+				ITopicQuestsOntology.LOCATOR_PROPERTY, airLocator, 0, -1, CORE_TYPE);
+		if (result.getResultObject() != null) {
+			List<String>airs = (List<String>)result.getResultObject();
+			int len = airs.size()+1;
+			List<String>versions = new ArrayList<String>();
+			for (int i=1;i<len;i++)
+				versions.add(Integer.toString(i));
+			result.setResultObject(versions);
+		}
+		return result;
+	}
+
+	@Override
+	public IResult putAIRVersion(IAddressableInformationResource air) {
+		String lox = makeAIRLocator(air.getLocator(),Integer.toBinaryString(air.getVersion()));
+		IResult result = jsonModel.putDocument(lox, IJSONTopicDataProvider.AIR_INDEX, 
+				CORE_TYPE, air.toJSON());
+		return result;
+	}
+	
+	private String makeAIRLocator(String locator, String version) {
+		return locator+"_"+version;
+	}
+
+	/////////////////////////////////
+	// Merge
+
+	@Override
+	public void mergeTwoNodes(INode leftNode, INode rightNode,
+			String reason, String userLocator, IMergeResultsListener mergeListener) {
+		Map<String,Double> mergeData = new HashMap<String,Double>();
+		String rx = reason;
+		if (rx == null || rx.equals(""))
+			rx = "No reason given: user-suggested";
+		mergeData.put(rx, 1.0);
+		mergePerformer.performMerge(leftNode, rightNode, mergeData, 1.0, userLocator, mergeListener);
+	}
 
 	/////////////////////////////////
 	// utility
+	
+	public void shutDown() {
+		this.interceptor.shutDown();
+	}
+
+	@Override
+	public INodeQuery getNodeQuery(INode node) {
+		return new NodeQuery(node,this,jsonModel);
+	}
 	
 	/**
 	 * <p>The {@link INode} implementation uses this to calculate
@@ -952,16 +1007,6 @@ public class JSONDocStoreTopicMapProvider implements IJSONDataProvider {
 		return result;
 	}
 
-	@Override
-	public void mergeTwoNodes(INode leftNode, INode rightNode,
-			String reason, String userLocator, IMergeResultsListener mergeListener) {
-		Map<String,Double> mergeData = new HashMap<String,Double>();
-		String rx = reason;
-		if (rx == null || rx.equals(""))
-			rx = "No reason given: user-suggested";
-		mergeData.put(rx, 1.0);
-		mergePerformer.performMerge(leftNode, rightNode, mergeData, 1.0, userLocator, mergeListener);
-	}
 
 	@Override
 	public void setVirtualizerHandler(VirtualizerHandler h) {
@@ -972,6 +1017,13 @@ public class JSONDocStoreTopicMapProvider implements IJSONDataProvider {
 	public void recycleNode(INode n) {
 		_model.recycleNode(n);
 	}
+
+	@Override
+	public IResult init(IEnvironment arg0, int arg1) {
+		// NOT USED
+		return null;
+	}
+
 
 
 }

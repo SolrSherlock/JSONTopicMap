@@ -7,12 +7,12 @@ import java.util.Map;
 
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
-import org.topicquests.model.api.IDataProvider;
 import org.topicquests.model.api.IEnvironment;
 import org.topicquests.model.api.IMergeImplementation;
-import org.topicquests.model.api.INodeModel;
+import org.topicquests.model.api.node.INodeModel;
 import org.topicquests.model.api.IVirtualizer;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 
 /**
  * @author park
@@ -20,7 +20,7 @@ import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
  */
 public class MergeBean implements IMergeImplementation {
 	private JSONTopicmapEnvironment environment;
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 	private INodeModel model;
 	/* (non-Javadoc)
 	 * @see org.topicquests.model.api.IMergeImplementation#init(org.topicquests.model.api.IEnvironment)
@@ -28,7 +28,7 @@ public class MergeBean implements IMergeImplementation {
 	@Override
 	public void init(IEnvironment environment) {
 		this.environment = (JSONTopicmapEnvironment)environment;
-		database = environment.getDataProvider();
+		database = (IJSONTopicDataProvider)environment.getDataProvider();
 	}
 
 	/* (non-Javadoc)

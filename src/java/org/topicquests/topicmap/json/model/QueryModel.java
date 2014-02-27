@@ -20,8 +20,8 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.topicquests.common.api.ITopicQuestsOntology;
-import org.topicquests.model.api.IQueryIterator;
-import org.topicquests.model.api.IQueryModel;
+import org.topicquests.model.api.query.IQueryIterator;
+import org.topicquests.model.api.query.IQueryModel;
 import org.topicquests.common.QueryUtil;
 
 /**

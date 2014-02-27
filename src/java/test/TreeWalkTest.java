@@ -10,7 +10,7 @@ import org.topicquests.model.api.ITicket;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
 import org.topicquests.topicmap.json.model.StatisticsUtility;
-import org.topicquests.topicmap.json.model.api.IJSONDataProvider;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.topicmap.json.model.api.ITreeNode;
 
 /**
@@ -19,7 +19,7 @@ import org.topicquests.topicmap.json.model.api.ITreeNode;
  */
 public class TreeWalkTest {
 	private JSONTopicmapEnvironment environment;
-	private IJSONDataProvider dataProvider;
+	private IJSONTopicDataProvider dataProvider;
 	private ITicket credentials;
 
 	/**
@@ -27,7 +27,7 @@ public class TreeWalkTest {
 	 */
 	public TreeWalkTest() {
 		environment = new JSONTopicmapEnvironment(new StatisticsUtility());
-		dataProvider = (IJSONDataProvider)environment.getDataProvider();
+		dataProvider = (IJSONTopicDataProvider)environment.getDataProvider();
 		credentials = new TicketPojo(ITopicQuestsOntology.SYSTEM_USER);
 		
 		IResult r = dataProvider.loadTree(ITopicQuestsOntology.TYPE_TYPE, 4, 0, 50, credentials);

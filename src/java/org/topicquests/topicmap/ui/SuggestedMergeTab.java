@@ -5,10 +5,9 @@ import javax.swing.*;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.TicketPojo;
-import org.topicquests.model.api.IDataProvider;
-import org.topicquests.model.api.INode;
+import org.topicquests.model.api.node.INode;
 import org.topicquests.model.api.ITicket;
-import org.topicquests.topicmap.json.model.api.IJSONDataProvider;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.topicmap.json.model.api.IMergeResultsListener;
 
 import java.awt.*;
@@ -36,7 +35,7 @@ public class SuggestedMergeTab
 	//HOT THREAD SAFE
 	private String theNodes;
 	private INode leftNode, rightNode;
-	private IJSONDataProvider database;
+	private IJSONTopicDataProvider database;
 	private ITicket credentials;
 	
   public SuggestedMergeTab() {
@@ -53,8 +52,8 @@ public class SuggestedMergeTab
     }
   }
 
-  public void setDataProvider(IDataProvider dp) {
-	  database = (IJSONDataProvider)dp;
+  public void setDataProvider(IJSONTopicDataProvider dp) {
+	  database = (IJSONTopicDataProvider)dp;
   }
   
   private void jbInit() throws Exception {

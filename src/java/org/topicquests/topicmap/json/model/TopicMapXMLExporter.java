@@ -21,11 +21,11 @@ import java.util.logging.Logger;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
-import org.topicquests.model.api.IDataProvider;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.ITuple;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.node.ITuple;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.topicmap.json.model.api.IExporterListener;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.util.LoggingPlatform;
 
 /**
@@ -35,14 +35,14 @@ import org.topicquests.util.LoggingPlatform;
 public class TopicMapXMLExporter {
 	public LoggingPlatform log = LoggingPlatform.getLiveInstance();
 
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 	private IExporterListener listener = null;
 	private List<String> loopStopper = null;
 
 	/**
 	 * 
 	 */
-	public TopicMapXMLExporter(IDataProvider db) {
+	public TopicMapXMLExporter(IJSONTopicDataProvider db) {
 		database = db;
 		loopStopper = new ArrayList<String>();
 	}

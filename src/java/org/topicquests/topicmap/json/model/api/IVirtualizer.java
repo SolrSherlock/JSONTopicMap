@@ -6,7 +6,7 @@ package org.topicquests.topicmap.json.model.api;
 import java.util.Map;
 
 import org.topicquests.common.api.IResult;
-import org.topicquests.model.api.INode;
+import org.topicquests.model.api.node.INode;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
 
 /**

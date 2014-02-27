@@ -6,13 +6,13 @@ package org.topicquests.topicmap.json.model;
 import java.util.*;
 
 import org.topicquests.common.api.IResult;
-import org.topicquests.model.api.IQueryIterator;
-import org.topicquests.model.api.IQueryModel;
+import org.topicquests.model.api.query.IQueryIterator;
+import org.topicquests.model.api.query.IQueryModel;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.topicmap.json.model.api.IExtendedConsoleDisplay;
 import org.topicquests.topicmap.json.model.api.IExtendedEnvironment;
 import org.topicquests.topicmap.ui.SearchTab;
-import org.topicquests.model.api.INode;
+import org.topicquests.model.api.node.INode;
 /**
  * @author park
  *

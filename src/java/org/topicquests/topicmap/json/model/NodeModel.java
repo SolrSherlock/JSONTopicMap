@@ -22,12 +22,13 @@ import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.Node;
 import org.topicquests.model.TicketPojo;
-import org.topicquests.model.api.IDataProvider;
 import org.topicquests.model.api.IMergeImplementation;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.INodeModel;
-import org.topicquests.model.api.ITuple;
+import org.topicquests.model.api.node.IAddressableInformationResource;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.node.INodeModel;
+import org.topicquests.model.api.node.ITuple;
 import org.topicquests.model.api.ITicket;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.util.LoggingPlatform;
 
 /**
@@ -36,26 +37,32 @@ import org.topicquests.util.LoggingPlatform;
  */
 public class NodeModel implements INodeModel {
 	private JSONTopicmapEnvironment environment;
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 	private IMergeImplementation merger;
 	private Stack<INode>nodeStack;
 	private int maxNumNodes = 100;
 	private StatisticsUtility stats;
+	private ITicket credentials;
 
 	/**
 	 * 
 	 */
-	public NodeModel(JSONTopicmapEnvironment env, IDataProvider db, IMergeImplementation m, int stackSize) {
+	public NodeModel(JSONTopicmapEnvironment env, IJSONTopicDataProvider db, IMergeImplementation m, int stackSize) {
 		environment = env;
 		database = db;
 		stats = environment.getStats();
 		merger = m;
 		nodeStack = new Stack<INode>();
 		maxNumNodes = stackSize;
+		credentials = getDefaultCredentials(ITopicQuestsOntology.SYSTEM_USER);
 		if (merger != null)
 			merger.setNodeModel(this);
 	}
 
+	/**
+	 * Internal {@link INode} factory
+	 * @return
+	 */
 	private INode getNode() {
 //		return new Node();
 		synchronized(nodeStack) {
@@ -118,9 +125,28 @@ public class NodeModel implements INodeModel {
 			String smallImagePath, String largeImagePath, boolean isPrivate) {
 		INode result = newNode(locator,label,description,lang,userId,smallImagePath,largeImagePath,isPrivate);
 		result.addSuperclassId(superclassLocator);
+		List<String>tc = _listTransitiveClosure(superclassLocator);
+		result.setTransitiveClosure(tc);
+		result.addTransitiveClosureLocator(superclassLocator);
 		return result;
 	}
 
+	/**
+	 * Returns transitive closure for a given node
+	 * @param parentLocator
+	 * @return does not return <code>null</code>
+	 */
+	private List<String> _listTransitiveClosure(String parentLocator) {
+		IResult x = database.getNode(parentLocator, credentials);
+		INode n = (INode)x.getResultObject();
+		List<String>result = null;
+		if (n != null)
+			result  = n.listTransitiveClosure();
+		if (result == null)
+			result = new ArrayList<String>();
+		return result;
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.topicquests.model.api.INodeModel#newSubclassNode(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean)
 	 */
@@ -130,6 +156,9 @@ public class NodeModel implements INodeModel {
 			String smallImagePath, String largeImagePath, boolean isPrivate) {
 		INode result = newNode(label,description,lang,userId,smallImagePath,largeImagePath,isPrivate);
 		result.addSuperclassId(superclassLocator);
+		List<String>tc = _listTransitiveClosure(superclassLocator);
+		result.setTransitiveClosure(tc);
+		result.addTransitiveClosureLocator(superclassLocator);
 		return result;
 	}
 
@@ -142,6 +171,9 @@ public class NodeModel implements INodeModel {
 			String smallImagePath, String largeImagePath, boolean isPrivate) {
 		INode result = newNode(locator,label,description,lang,userId,smallImagePath,largeImagePath,isPrivate);
 		result.setNodeType(typeLocator);
+		List<String>tc = _listTransitiveClosure(typeLocator);
+		result.setTransitiveClosure(tc);
+		result.addTransitiveClosureLocator(typeLocator);
 		return result;
 	}
 
@@ -154,6 +186,9 @@ public class NodeModel implements INodeModel {
 			String smallImagePath, String largeImagePath, boolean isPrivate) {
 		INode result = newNode(label,description,lang,userId,smallImagePath,largeImagePath,isPrivate);
 		result.setNodeType(typeLocator);
+		List<String>tc = _listTransitiveClosure(typeLocator);
+		result.setTransitiveClosure(tc);
+		result.addTransitiveClosureLocator(typeLocator);
 		return result;
 	}
 
@@ -400,13 +435,7 @@ public class NodeModel implements INodeModel {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.topicquests.model.api.INodeModel#dateToSolrDate(java.util.Date)
-	 */
-	@Override
-	public String dateToSolrDate(Date d) {
-		throw new RuntimeException("NodeModel.dateToSolrDate not implemented");
-	}
+	
 	/**
 	 * 
 	 * @param o
@@ -438,6 +467,27 @@ public class NodeModel implements INodeModel {
 			}
 		} 
 		
+	}
+
+	@Override
+	public IAddressableInformationResource newAIR(String locator, String subject, String body, 
+			String language, String userId, boolean isPrivate) {
+		IAddressableInformationResource result = (IAddressableInformationResource)getNode();
+		String lox = locator;
+		if (lox == null)
+			lox = database.getUUID();
+		result.setLocator(lox);
+		result.setNodeType(ITopicQuestsOntology.AIR_TYPE);
+		List<String>tc = _listTransitiveClosure(ITopicQuestsOntology.AIR_TYPE);
+		result.setTransitiveClosure(tc);
+		result.addTransitiveClosureLocator(ITopicQuestsOntology.AIR_TYPE);
+		result.setCreatorId(userId);
+		result.setSubject(subject, language);
+		result.setBody(body,language);
+		Date d = new Date();
+		result.setDate(d); 
+		result.setLastEditDate(d);
+		return result;
 	}
 
 }

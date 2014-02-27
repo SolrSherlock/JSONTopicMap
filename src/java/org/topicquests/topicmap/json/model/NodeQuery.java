@@ -23,14 +23,14 @@ import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.Compare;
-import org.topicquests.model.api.IDataProvider;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.INodeQuery;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.query.INodeQuery;
 import org.topicquests.model.api.IPredicate;
-import org.topicquests.model.api.ITuple;
-import org.topicquests.model.api.ITupleQuery;
+import org.topicquests.model.api.node.ITuple;
+import org.topicquests.model.api.query.ITupleQuery;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 //import org.topicquests.topicmap.json.model.api.IJSONTopicMapOntology;
 import org.topicquests.util.LoggingPlatform;
 import org.topicquests.model.Node;
@@ -41,7 +41,7 @@ import org.topicquests.model.Node;
  */
 public class NodeQuery implements INodeQuery {
 	private LoggingPlatform log = LoggingPlatform.getLiveInstance();
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 //	private IJSONDocStoreModel jsonModel;
 	private INode me;
     public List<HasContainer> hasContainers = new ArrayList<HasContainer>();
@@ -58,7 +58,7 @@ public class NodeQuery implements INodeQuery {
 	 * @param dp
 	 * @param m
 	 */
-	public NodeQuery(INode n, IDataProvider dp, IJSONDocStoreModel m) {
+	public NodeQuery(INode n, IJSONTopicDataProvider dp, IJSONDocStoreModel m) {
 		me = n;
 //		jsonModel = m;
 		this.database = dp;

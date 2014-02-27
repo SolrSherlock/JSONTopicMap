@@ -8,10 +8,10 @@ import java.util.*;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
-import org.topicquests.model.api.IDataProvider;
-import org.topicquests.model.api.INode;
+import org.topicquests.model.api.node.INode;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
 import org.topicquests.topicmap.json.model.StatisticsUtility;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.topicmap.json.model.api.ISocialBookmarkModel;
 
 /**
@@ -23,7 +23,7 @@ public class SocialBookmarkTest {
 	private ISocialBookmarkModel model;
 	private String userId;
 	private Set<String>credentials;
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 	private final String url = "http://foo.org/";
 	private final String 
 		TAG1 	= "Pretty funny",
@@ -38,7 +38,7 @@ public class SocialBookmarkTest {
 	public SocialBookmarkTest() {
 		environment = new JSONTopicmapEnvironment(new StatisticsUtility());
 		model = environment.getBookmarkModel();
-		database = environment.getDataProvider();
+		database = (IJSONTopicDataProvider)environment.getDataProvider();
 		//create credentials
 		credentials = new HashSet<String>();
 		userId = ITopicQuestsOntology.SYSTEM_USER;

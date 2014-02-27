@@ -38,6 +38,7 @@ import org.topicquests.persist.json.JSONDocStoreEnvironment;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
 import org.topicquests.topicmap.json.model.StatisticsUtility;
 import org.topicquests.topicmap.json.model.api.IExtendedConsoleDisplay;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.util.TextFileHandler;
 /**
  * @author Jack Park
@@ -94,7 +95,7 @@ public class MainFrame
       environment = new JSONTopicmapEnvironment(stats);
       environment.setConsole(this);
       treeTab.setEnvironment(environment);
-      mergeTab.setDataProvider(environment.getDataProvider());
+      mergeTab.setDataProvider((IJSONTopicDataProvider)environment.getDataProvider());
       searchTab.setEnvironment(environment);
       statsTab.init(environment);
     }

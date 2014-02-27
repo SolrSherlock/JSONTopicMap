@@ -11,13 +11,13 @@ import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
 //import org.topicquests.model.api.IDataProvider;
 //import org.topicquests.model.api.IEnvironment;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.INodeModel;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.node.INodeModel;
 import org.topicquests.model.api.ITicket;
-import org.topicquests.model.api.ITuple;
-import org.topicquests.model.api.ITupleQuery;
+import org.topicquests.model.api.node.ITuple;
+import org.topicquests.model.api.query.ITupleQuery;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
-import org.topicquests.topicmap.json.model.api.IJSONDataProvider;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 
 /**
  * @author park
@@ -25,14 +25,14 @@ import org.topicquests.topicmap.json.model.api.IJSONDataProvider;
  */
 public class BaseVirtualizer {
 	protected JSONTopicmapEnvironment environment;
-	protected IJSONDataProvider database;
+	protected IJSONTopicDataProvider database;
 	protected INodeModel nodeModel;
 	protected ITupleQuery tupleQuery;
 	
 
 	public void init(JSONTopicmapEnvironment env) {
 		environment = (JSONTopicmapEnvironment)env;
-		database = (IJSONDataProvider)environment.getDataProvider();
+		database = (IJSONTopicDataProvider)environment.getDataProvider();
 		nodeModel = database.getNodeModel();
 		tupleQuery = database.getTupleQuery();
 	}
@@ -140,7 +140,6 @@ public class BaseVirtualizer {
 		if (key.equals(ITopicQuestsOntology.LOCATOR_PROPERTY) ||
 			key.equals(ITopicQuestsOntology.CREATED_DATE_PROPERTY) ||
 			key.equals(ITopicQuestsOntology.LAST_EDIT_DATE_PROPERTY) ||
-			key.equals(ITopicQuestsOntology.SOLR_VERSION_PROPERTY_TYPE)||
 			key.equals(ITopicQuestsOntology.CREATOR_ID_PROPERTY) ||
 			key.equals(ITopicQuestsOntology.IS_PRIVATE_PROPERTY))
 			return false;
@@ -155,7 +154,6 @@ public class BaseVirtualizer {
 		if (key.equals(ITopicQuestsOntology.LOCATOR_PROPERTY) ||
 			key.equals(ITopicQuestsOntology.CREATED_DATE_PROPERTY) ||
 			key.equals(ITopicQuestsOntology.LAST_EDIT_DATE_PROPERTY) ||
-			key.equals(ITopicQuestsOntology.SOLR_VERSION_PROPERTY_TYPE)||
 			key.equals(ITopicQuestsOntology.CREATOR_ID_PROPERTY) ||
 			key.equals(ITopicQuestsOntology.PSI_PROPERTY_TYPE) ||
 			key.equals(ITopicQuestsOntology.RESOURCE_URL_PROPERTY) ||
@@ -364,7 +362,6 @@ public class BaseVirtualizer {
 		//TODO: must pay attention to changes in date fields
 		///////////////////////////////
 		environment.logDebug("MergeBean.performTupleSergery "+t.getLocator()+" "+newLocator);
-		t.getProperties().remove(ITopicQuestsOntology.SOLR_VERSION_PROPERTY_TYPE);
 		IResult result = nodeModel.changePropertyValue(t, key, newLocator);
 		
 		return result;

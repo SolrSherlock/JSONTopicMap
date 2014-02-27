@@ -7,7 +7,7 @@ import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IBootstrap;
 import org.topicquests.common.api.IResult;
 import org.topicquests.model.BootstrapBase;
-import org.topicquests.model.api.IDataProvider;
+import org.topicquests.model.api.provider.ITopicDataProvider;
 
 /**
  * @author park
@@ -19,7 +19,7 @@ public class SowaCategoriesBootstrap extends BootstrapBase implements
 	/**
 	 * @param db
 	 */
-	public SowaCategoriesBootstrap(IDataProvider db) {
+	public SowaCategoriesBootstrap(ITopicDataProvider db) {
 		super(db);
 	}
 

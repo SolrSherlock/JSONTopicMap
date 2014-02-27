@@ -8,11 +8,11 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.TicketPojo;
-import org.topicquests.model.api.IDataProvider;
-import org.topicquests.model.api.INode;
+import org.topicquests.model.api.node.INode;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
 import org.topicquests.topicmap.json.model.StatisticsUtility;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 
 /**
  * @author park
@@ -20,7 +20,7 @@ import org.topicquests.topicmap.json.model.StatisticsUtility;
  */
 public class NewQueryTest_1 {
 	private JSONTopicmapEnvironment environment;
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 	private ITicket credentials;
 	private String userId;
 	private String lang = "en";
@@ -32,7 +32,7 @@ public class NewQueryTest_1 {
 	 */
 	public NewQueryTest_1() {
 		environment = new JSONTopicmapEnvironment(new StatisticsUtility());
-		database = environment.getDataProvider();
+		database = (IJSONTopicDataProvider)environment.getDataProvider();
 		//create credentials
 		credentials = new TicketPojo(ITopicQuestsOntology.SYSTEM_USER);
 		userId = ITopicQuestsOntology.SYSTEM_USER;

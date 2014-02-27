@@ -31,11 +31,11 @@ import org.nex.util.DateUtil;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
-import org.topicquests.model.api.IDataProvider;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.ITuple;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.node.ITuple;
 import org.topicquests.model.api.IXMLFields;
 import org.topicquests.model.Node;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -44,13 +44,13 @@ import org.xmlpull.v1.XmlPullParserFactory;
  *
  */
 public class ImportPullParser {
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 	private INode theNode = null;
 
 	/**
 	 * 
 	 */
-	public ImportPullParser(IDataProvider db) {
+	public ImportPullParser(IJSONTopicDataProvider db) {
 		database = db;
 	}
 

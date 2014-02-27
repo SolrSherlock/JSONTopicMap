@@ -18,7 +18,7 @@ import java.util.*;
 import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.api.ITicket;
 import org.json.simple.JSONObject;
-import org.topicquests.model.api.IDataProvider;
+import org.topicquests.model.api.provider.ITopicDataProvider;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
 import org.topicquests.util.LoggingPlatform;
 import org.apache.commons.collections4.CollectionUtils;
@@ -29,13 +29,13 @@ import org.apache.commons.collections4.CollectionUtils;
  */
 public class CredentialUtility {
 	private LoggingPlatform log = LoggingPlatform.getLiveInstance();
-	private IDataProvider database;
+	private ITopicDataProvider database;
 	private IJSONDocStoreModel jsonModel;
 
 	/**
 	 * 
 	 */
-	public CredentialUtility(IDataProvider d, IJSONDocStoreModel j) {
+	public CredentialUtility(ITopicDataProvider d, IJSONDocStoreModel j) {
 		database = d;
 		jsonModel = j;
 	}

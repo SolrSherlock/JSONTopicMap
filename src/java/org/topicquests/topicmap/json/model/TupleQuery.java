@@ -25,12 +25,12 @@ import org.json.simple.parser.JSONParser;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
-import org.topicquests.model.api.IDataProvider;
 import org.topicquests.model.api.ITicket;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.ITuple;
-import org.topicquests.model.api.ITupleQuery;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.node.ITuple;
+import org.topicquests.model.api.query.ITupleQuery;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.topicmap.json.model.api.IJSONTopicMapOntology;
 import org.topicquests.util.LoggingPlatform;
 import org.topicquests.model.Node;
@@ -41,7 +41,7 @@ import org.topicquests.model.Node;
  */
 public class TupleQuery implements ITupleQuery {
 	private LoggingPlatform log = LoggingPlatform.getLiveInstance();
-	private IDataProvider database;
+	private IJSONTopicDataProvider database;
 	private IJSONDocStoreModel jsonModel;
 	private CredentialUtility credentialUtil;
 //	private JSONParser parser;
@@ -53,7 +53,7 @@ public class TupleQuery implements ITupleQuery {
 	/**
 	 * 
 	 */
-	public TupleQuery(IDataProvider d, IJSONDocStoreModel j) {
+	public TupleQuery(IJSONTopicDataProvider d, IJSONDocStoreModel j) {
 		database = d;
 		jsonModel = j;
 //		parser = new JSONParser();

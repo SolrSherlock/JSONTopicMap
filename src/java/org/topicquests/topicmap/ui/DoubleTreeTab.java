@@ -13,11 +13,11 @@ import javax.swing.tree.TreeModel;
 
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
-import org.topicquests.model.api.INode;
-import org.topicquests.model.api.INodeModel;
+import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.node.INodeModel;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
-import org.topicquests.topicmap.json.model.api.IJSONDataProvider;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.topicmap.json.model.api.ITreeNode;
 
 import java.awt.event.ActionEvent;
@@ -39,7 +39,7 @@ import java.util.*;
 public class DoubleTreeTab
     extends JPanel implements IEditorDialogListener {
 	private JSONTopicmapEnvironment environment;
-	private IJSONDataProvider database;
+	private IJSONTopicDataProvider database;
 	private INodeModel model;
 	private ITicket credentials;
 	private TreeModel leftModel;
@@ -67,7 +67,7 @@ public class DoubleTreeTab
 
   public void setEnvironment(JSONTopicmapEnvironment env) {
 	  environment = env;
-	  database = (IJSONDataProvider)environment.getDataProvider();
+	  database = (IJSONTopicDataProvider)environment.getDataProvider();
 	  model = database.getNodeModel();
 	  populateLeftTree();
   }

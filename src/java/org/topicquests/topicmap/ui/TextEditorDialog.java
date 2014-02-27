@@ -2,7 +2,7 @@ package org.topicquests.topicmap.ui;
 
 import javax.swing.*;
 
-import org.topicquests.topicmap.json.model.api.IJSONDataProvider;
+import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

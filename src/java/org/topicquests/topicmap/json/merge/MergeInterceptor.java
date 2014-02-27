@@ -19,7 +19,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 
-import org.topicquests.model.api.INode;
+import org.topicquests.model.api.node.INode;
 import org.topicquests.util.ConfigurationHelper;
 
 /**
@@ -70,6 +70,7 @@ public class MergeInterceptor {
 	void serveData(String data) {
 	    try {
 	        ServerSocket srvr = new ServerSocket(myPort);
+	        //java.net.BindException: Address already in use: JVM_Bind
 	        System.out.println("DocumentProcessor socket "+srvr);
 	        Socket skt = srvr.accept();
 	        System.out.print("Server has connected!\n");
@@ -81,7 +82,7 @@ public class MergeInterceptor {
 	        srvr.close();
 	    }
 	    catch(Exception e) {
-	        System.out.print("Whoops! It didn't work!\n");
+	        System.out.print("Whoops! MergeInterceptor didn't work!\n");
 	        e.printStackTrace();
 	        //TODO figure out how to get this into Solr's logging system
 	    }
