@@ -23,16 +23,12 @@
 		<parameter name="localhost" value="9300" /> 
 	</list>
 
-	<!-- Index must be lowercase 
-		These are hardwired inside the class JSONDocStoreModel -->
+	<!-- Index must be lowercase
+	     name is the index; value is which mappings file to use -->
 	<list name="IndexNames">
-		<parameter name="DocumentIndex" value="documents" />
-		<parameter name="WordGramIndex" value = "wordgrams" />
-		<parameter name="SentenceIndex" value = "sentences" />
-		<parameter name="TupleIndex" value = "tuples" />
-		<parameter name="TopicIndex" value = "topics" />
-		<parameter name="VertexIndex" value = "vertices" />
-		<parameter name="EdgeIndex"	  value = "edges" />
+		<parameter name="vertices" value = "graph.json" />
+		<parameter name="edges"	  value = "graph.json" />
+		<parameter name="topics" value = "mappings.json" />
 	</list>
 
 </properties>

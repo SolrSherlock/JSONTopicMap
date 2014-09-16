@@ -1,0 +1,41 @@
+{
+    "core": {
+        "properties": {
+            "lox": {
+                "index": "not_analyzed",
+                "type": "string",
+                "store": true
+            },
+            "InVertexId": {
+                "index": "not_analyzed",
+                "type": "string",
+                "store": true
+            },
+            "OutVertexId": {
+                "index": "not_analyzed",
+                "type": "string",
+                "store": true
+            },
+            "label": {
+                "index": "analyzed",
+                "type": "string",
+                "store": true
+            },
+            "lists": {
+                "properties": {
+                    "inEdgeIdList": {
+                        "index": "not_analyzed",
+                        "type": "string",
+                        "store": true
+                    },
+                    "outEdgeIdList": {
+                        "index": "not_analyzed",
+                        "type": "string",
+                        "store": true
+                    }
+                }
+            }
+        }
+    }
+
+}
