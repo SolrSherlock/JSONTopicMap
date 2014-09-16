@@ -79,25 +79,25 @@ public class BuildHugeTopicMap {
 		IResult r;
 		INode x = nodeModel.newSubclassNode(ATMOSPHERIC_EVENT_TYPE, IEventLegend.EVENT_TYPE, "Atmospheric Event", 
 				"Events related to atmospheric conditions, weather, and climate", lang, userId, smallImagePath, largeImagePath, isPrivate);
-		r = database.putNode(x);
+		r = database.putNode(x, true);
 		INode cc = nodeModel.newSubclassNode(CLIMATE_CHANGE, ATMOSPHERIC_EVENT_TYPE, "Climate Change", 
 				"Major changes in climate", lang, userId, smallImagePath, largeImagePath, isPrivate);
-		r = database.putNode(cc);
+		r = database.putNode(cc, true);
 		if (r.hasError())
 			result.addErrorString(r.getErrorString());
 		INode y = nodeModel.newSubclassNode(MOLECULE_TYPE, ITopicQuestsOntology.CLASS_TYPE, "Molecule Type", 
 				"Substances composed of many atoms", lang, userId, smallImagePath, largeImagePath, isPrivate);
-		r = database.putNode(y);
+		r = database.putNode(y, true);
 		if (r.hasError())
 			result.addErrorString(r.getErrorString());
 		INode co2 = nodeModel.newSubclassNode(CO2_TYPE, MOLECULE_TYPE, "CO2", 
 				"Carbon dioxide", lang, userId, smallImagePath, largeImagePath, isPrivate);
-		r = database.putNode(co2);
+		r = database.putNode(co2, true);
 		if (r.hasError())
 			result.addErrorString(r.getErrorString());
 		INode methane = nodeModel.newSubclassNode(METHANE_TYPE, MOLECULE_TYPE, "Methane", 
 				"Methane", lang, userId, smallImagePath, largeImagePath, isPrivate);
-		r = database.putNode(methane);
+		r = database.putNode(methane, true);
 		if (r.hasError())
 			result.addErrorString(r.getErrorString());
 		//now wire them
@@ -108,7 +108,7 @@ public class BuildHugeTopicMap {
 		ITuple t1 = (ITuple)r1.getResultObject();
 		//co2 is in the FOO_SCOPE
 		t1.addScope(FOO_SCOPE);
-		r1 = database.putTuple(t1);
+		r1 = database.putTuple(t1, true);
 		if (r1.hasError())
 			result.addErrorString(r.getErrorString());
 		if (r.hasError())
@@ -122,7 +122,7 @@ public class BuildHugeTopicMap {
 		ITuple t2 = (ITuple)r1.getResultObject();
 		//methane is in the BAR_SCOPE
 		t2.addScope(BAR_SCOPE);
-		r1 = database.putTuple(t1);
+		r1 = database.putTuple(t1, true);
 		if (r1.hasError())
 			result.addErrorString(r.getErrorString());
 		System.out.println("DONE "+result.getErrorString());

@@ -49,6 +49,7 @@ public class QueryModel implements IQueryModel {
 	public IQueryIterator listNodesByLabel(String label, String language,
 			int count, ITicket  credentials) {
 		IQueryIterator itr = new QueryIterator(environment);
+		//TODO do we need escapeQueryCulprits for ElasticSearch?
 		QueryBuilder q = QueryBuilders.termQuery(makeField(label,language), QueryUtil.escapeQueryCulprits(label));
 		environment.logDebug("QueryModel.listNodesByDetails- "+q.toString());
 
@@ -63,6 +64,7 @@ public class QueryModel implements IQueryModel {
 	public IQueryIterator listNodesByDetails(String details, String language,
 			int count, ITicket  credentials) {
 		IQueryIterator itr = new QueryIterator(environment);
+		//TODO do we need escapeQueryCulprits for ElasticSearch?
 		QueryBuilder q = QueryBuilders.termQuery(makeField(detailsQuery,language), QueryUtil.escapeQueryCulprits(details));
 		environment.logDebug("QueryModel.listNodesByDetails- "+q.toString());
 

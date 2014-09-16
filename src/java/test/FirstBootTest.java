@@ -56,7 +56,7 @@ public class FirstBootTest {
 		INode n1 = nodeModel.newNode(firstId, "My very first topic", 
 				"Something to think about", "en", user, null, null, false);
 		System.out.println("FBT-0 "+n1.toJSON());
-		r = database.putNode(n1);
+		r = database.putNode(n1, true);
 		System.out.println("FBT-1 "+r.getErrorString());
 		r = database.getNode(firstId, credentials);
 		System.out.println("FBT-2 "+(r.getResultObject() == null)+" "+r.getErrorString());

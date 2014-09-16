@@ -37,7 +37,9 @@ public class TestHarness {
 		//new TreeWalkTest();
 		//new PullParserTest();
 		//new NewQueryTest_1();
-		new FirstAirTest();
+		//new FirstAirTest();
+		//new QueryBuilderTest();
+		new QueryTest2();
 		System.out.println("Did");
 	}
 

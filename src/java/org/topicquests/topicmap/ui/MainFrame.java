@@ -85,13 +85,16 @@ public class MainFrame
 	}
   
   public MainFrame() {
+      System.out.println("MAINFRAME-");
     try {
     	//by setting default close to doNothing, we avoid the issue
     	//of quitting without calling shutDown.
     	//To exit this program, must use File:Exit
       setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+      System.out.println("MAINFRAME-1");
       jbInit();
       stats = new StatisticsUtility();
+      System.out.println("MAINFRAME-2");
       environment = new JSONTopicmapEnvironment(stats);
       environment.setConsole(this);
       treeTab.setEnvironment(environment);

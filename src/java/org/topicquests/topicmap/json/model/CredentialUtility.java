@@ -49,7 +49,12 @@ public class CredentialUtility {
 	 */
 	public boolean checkCredentials(JSONObject jo, ITicket credentials) {
 		String o = (String)jo.get(ITopicQuestsOntology.IS_PRIVATE_PROPERTY);
-		if (o.equals("true")) {
+		if (o == null) {
+			//defaults true
+			log.logDebug("CredentialUtility bad: "+jo.toJSONString());
+			return true;			
+		}
+		else if ( o.equals("true")) {
 			//same creator?
 			o = (String)jo.get(ITopicQuestsOntology.CREATOR_ID_PROPERTY);
 			if (o.equals(credentials.getUserLocator()))
@@ -70,8 +75,9 @@ public class CredentialUtility {
 				Collection<String> intersect = CollectionUtils.intersection(acls, l);
 				return (!intersect.isEmpty());
 			}
-		} else
+		} else {
 			return true;
+		}
 		return false;
 	}
 

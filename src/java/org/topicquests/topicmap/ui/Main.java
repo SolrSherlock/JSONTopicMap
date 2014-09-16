@@ -34,6 +34,7 @@ public class Main {
    * Construct and show the application.
    */
   public Main() {
+	  System.out.println("STARTING MAIN");
    //   PropertyConfigurator.configure("logger.properties");
     frame = new MainFrame();
     // Validate frames that have preset sizes

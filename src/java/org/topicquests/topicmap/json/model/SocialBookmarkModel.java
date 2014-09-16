@@ -103,7 +103,7 @@ public class SocialBookmarkModel implements ISocialBookmarkModel {
 				t = "Bookmark for "+url;
 			theBookmark = nodeModel.newInstanceNode(INodeTypes.BOOKMARK_TYPE, t, details, language, userId, ICoreIcons.BOOKMARK_SM, ICoreIcons.BOOKMARK, false);
 			environment.logDebug("SocialBookmarkModel.bookmark-2 "+qba.toString());
-			database.putNode(theBookmark);
+			database.putNode(theBookmark, true);
 		}
 		result.setResultObject(theBookmark);
 		environment.logDebug("SocialBookmarkModel.bookmark-3 "+theBookmark.toJSON());
@@ -171,7 +171,7 @@ public class SocialBookmarkModel implements ISocialBookmarkModel {
 			//newInstanceNode(String locator,String typeLocator,String label, String description, 
 			//  String lang, String userId, String smallImagePath, String largeImagePath, boolean isPrivate);
 			INode n = nodeModel.newInstanceNode(lox, INodeTypes.TAG_TYPE, tag, "A tag with the label: "+tag, lang, userId, ICoreIcons.TAG_SM, ICoreIcons.TAG, false);
-			database.putNode(n);
+			database.putNode(n, true);
 			result.setResultObject(n);
 		}
 		environment.logDebug("SocialBookmarkModel.getOrCreateTag+ "+result.getResultObject());		

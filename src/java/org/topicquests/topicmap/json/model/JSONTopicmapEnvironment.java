@@ -71,6 +71,7 @@ public class JSONTopicmapEnvironment
 	private StatisticsUtility stats;
 	private SearchEnvironment searcher;
 	private AMPQHandler messenger;
+	private JSONBootstrap jsonBootstrapper;
 
 
 	public SearchEnvironment getSearchEnvironment() {
@@ -87,6 +88,7 @@ public class JSONTopicmapEnvironment
 	 */
 	public JSONTopicmapEnvironment(StatisticsUtility u) {
 		stats = u;
+		System.out.println("JSONTOPICMAPENV-");
 		ConfigPullParser p = new ConfigPullParser("topicmap-props.xml");
 		props = p.getProperties();
 		jsonEnvironment = new JSONDocStoreEnvironment();
@@ -104,6 +106,7 @@ public class JSONTopicmapEnvironment
 	public JSONTopicmapEnvironment(JSONDocStoreEnvironment env) {
 	//	super(false);
 		jsonEnvironment = env;
+		System.out.println("JSONTOPICMAPENV-");
 		jsonModel = jsonEnvironment.getModel();
 		ConfigPullParser p = new ConfigPullParser("topicmap-props.xml");
 		props = p.getProperties();
@@ -117,14 +120,18 @@ public class JSONTopicmapEnvironment
 			String siz = getStringProperty("MapCacheSize");
 			System.out.println("XXXX "+siz);
 			int cachesize = Integer.parseInt(siz);
+			System.out.println("JSONTOPICMAPENV-1");
 			dataProvider = new JSONDocStoreTopicMapProvider(this, cachesize) ;
 			siz = getStringProperty("VirtualizerClass");
 			virtualizer = (IVirtualizer)Class.forName(siz).newInstance();
 			virtualizer.init(this);
+			System.out.println("JSONTOPICMAPENV-2");
 		} catch (Exception e) {
+			System.out.println("JSONTOPICMAPENV-3");
 			log.logError(e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
+		System.out.println("JSONTOPICMAPENV-4");
 		virtualizerHandler = new VirtualizerHandler(this);
 		dataProvider.setVirtualizerHandler(virtualizerHandler);
 		queryModel = new QueryModel(this);
@@ -133,12 +140,16 @@ public class JSONTopicmapEnvironment
 		bookmarkModel = new SocialBookmarkModel(this);
 		String bs = (String)props.get("ShouldBootstrap");
 		sameLabelMerger = new SameLabelMergeHandler(this);
-		messenger = new AMPQHandler(this);
-		boolean shouldBootstrap = false; // default value
-		if (bs != null)
-			shouldBootstrap = bs.equalsIgnoreCase("Yes");
-		if (shouldBootstrap)
-			bootstrap();
+		System.out.println("JSONTOPICMAPENV-5");
+//		messenger = new AMPQHandler(this);
+//		boolean shouldBootstrap = false; // default value
+//		if (bs != null)
+//			shouldBootstrap = bs.equalsIgnoreCase("Yes");
+//		if (shouldBootstrap)
+//			bootstrap();
+		System.out.println("HELLO WORLD");
+		jsonBootstrapper = new JSONBootstrap(this);
+		jsonBootstrapper.bootstrap();
 	}
 	
 	/**

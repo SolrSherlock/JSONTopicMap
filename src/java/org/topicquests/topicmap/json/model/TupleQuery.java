@@ -446,4 +446,26 @@ public class TupleQuery implements ITupleQuery {
 		return result;	
 	 }
 
+	@Override
+	public IResult getTupleBySignature(String signature, ITicket credentials) {
+		log.logDebug("TupleQuery.getTupleBySignature- "+signature);
+		IResult result = jsonModel.getDocumentByProperty(IJSONTopicMapOntology.TOPIC_INDEX, ITopicQuestsOntology.TUPLE_SIGNATURE_PROPERTY, signature, IJSONTopicMapOntology.CORE_TYPE);
+		if (result.getResultObject() != null) {	
+			List<String>l = (List<String>)result.getResultObject();
+			result.setResultObject(null);
+			if (!l.isEmpty()) {
+				String json = l.get(0);
+				try {
+					JSONObject jo = jsonToJSON(json);
+					INode n = new Node(jo);
+					result.setResultObject(n);
+				} catch (Exception e) {
+					log.logError(e.getMessage(), e);
+					result.addErrorString(e.getMessage());
+				}			
+			}
+		}
+		return result;
+	}
+
 }

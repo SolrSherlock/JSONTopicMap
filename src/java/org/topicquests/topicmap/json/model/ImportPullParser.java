@@ -134,13 +134,13 @@ public class ImportPullParser {
 	                if(temp.equalsIgnoreCase(IXMLFields.NODES)) {
 
 	                } else if(temp.equalsIgnoreCase(IXMLFields.NODE)) {
-	                	database.putNode(theNode);
+	                	database.putNode(theNode, true);
 	                	theNode = null;
 	                	locator = null;
 	                } else if (temp.equalsIgnoreCase(IXMLFields.TUPLES)) {
 
 	                } else if (temp.equalsIgnoreCase(IXMLFields.TUPLE)) {
-	                	database.putNode(theNode);
+	                	database.putNode(theNode, true);
 	                	theNode = null;
 	                	locator = null;
 	                } else if (temp.equalsIgnoreCase(IXMLFields.PROPERTIES)) {

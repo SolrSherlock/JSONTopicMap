@@ -88,6 +88,7 @@ public class NodeModel implements INodeModel {
 		//result.setResultObject(n);
 		n.setLocator(locator);
 		n.setCreatorId(userId);
+		n.setVersion(Long.toString(System.currentTimeMillis())); //default
 		Date d = new Date();
 		n.setDate(d); 
 		n.setLastEditDate(d);
@@ -225,7 +226,7 @@ public class NodeModel implements INodeModel {
 				val.add(updatedDetails);
 				n.setProperty(field, val);
 			}
-			return database.updateNode(n);
+			return database.updateNode(n, true);
 		}
 		return result;
 	}
@@ -244,7 +245,7 @@ public class NodeModel implements INodeModel {
 			String v = (String)o;
 			if (!v.equals(newValue)) {
 				node.setProperty(key, newValue);
-				result = database.putNode(node);
+				result = database.putNode(node, true);
 				database.removeFromCache(node.getLocator());
 			} else
 				result = new ResultPojo();
@@ -264,7 +265,7 @@ public class NodeModel implements INodeModel {
 		List<String>values = makeListIfNeeded( myMap.get(key));
 		if (!values.contains(newValue)) {
 			values.add(newValue);
-			result = database.putNode(node);
+			result = database.putNode(node, true);
 			database.removeFromCache(sourceNodeLocator);
 		} else
 			result = new ResultPojo();
@@ -328,13 +329,13 @@ public class NodeModel implements INodeModel {
 			sourceNode.addTuple(tLoc);
 			targetNode.addTuple(tLoc);
 		}
-		IResult x = database.putNode(sourceNode);
+		IResult x = database.putNode(sourceNode, true);
 		if (x.hasError())
 			result.addErrorString(x.getErrorString());
-		x = database.putNode(targetNode);
+		x = database.putNode(targetNode, true);
 		if (x.hasError())
 			result.addErrorString(x.getErrorString());
-		database.putNode(t);
+		database.putNode(t, true);
 		if (x.hasError())
 			result.addErrorString(x.getErrorString());
 		environment.logDebug("NodeModel.relateNewNodes "+sourceNode.getLocator()+" "+targetNode.getLocator()+" "+t.getLocator()+" | "+result.getErrorString());
@@ -367,13 +368,13 @@ public class NodeModel implements INodeModel {
 			sourceNode.addTuple(tLoc);
 			targetNode.addTuple(tLoc);
 		}
-		IResult x = database.putNode(sourceNode);
+		IResult x = database.putNode(sourceNode, true);
 		if (x.hasError())
 			result.addErrorString(x.getErrorString());
-		x = database.putNode(targetNode);
+		x = database.putNode(targetNode, true);
 		if (x.hasError())
 			result.addErrorString(x.getErrorString());
-		database.putNode(t);
+		database.putNode(t, true);
 		if (x.hasError())
 			result.addErrorString(x.getErrorString());
 		environment.logDebug("NodeModel.relateNewNodes "+sourceNode.getLocator()+" "+targetNode.getLocator()+" "+t.getLocator()+" | "+result.getErrorString());
@@ -468,7 +469,7 @@ public class NodeModel implements INodeModel {
 		} 
 		
 	}
-
+/**
 	@Override
 	public IAddressableInformationResource newAIR(String locator, String subject, String body, 
 			String language, String userId, boolean isPrivate) {
@@ -487,6 +488,55 @@ public class NodeModel implements INodeModel {
 		Date d = new Date();
 		result.setDate(d); 
 		result.setLastEditDate(d);
+		return result;
+	}
+*/
+	@Override
+	public IResult addSuperClass(INode node, String superClassLocator) {
+		node.addSuperclassId(superClassLocator);
+		IResult result = database.getNode(superClassLocator, credentials);
+		INode s = (INode)result.getResultObject();
+		result.setResultObject(null);
+		List<String>stc = s.listTransitiveClosure();
+		List<String>ntc = node.listTransitiveClosure();
+		
+		if (ntc == null)
+			ntc = new ArrayList<String>();
+		ntc.add(superClassLocator);
+		if (stc != null && !stc.isEmpty()) {
+			String x;
+			for (int i=0;i<stc.size();i++) {
+				x = stc.get(i);
+				if (!ntc.contains(x))
+					ntc.add(x);
+			}
+		}
+		result = database.putNode(node, true);
+		return result;
+	}
+
+	@Override
+	public IResult setNodeType(INode node, String typeLocator) {
+		//NOTE: if this node was already a type, it just got wiped out
+		node.setNodeType(typeLocator);
+		IResult result = database.getNode(typeLocator, credentials);
+		INode s = (INode)result.getResultObject();
+		result.setResultObject(null);
+		List<String>stc = s.listTransitiveClosure();
+		List<String>ntc = node.listTransitiveClosure();
+		
+		if (ntc == null)
+			ntc = new ArrayList<String>();
+		ntc.add(typeLocator);
+		if (stc != null && !stc.isEmpty()) {
+			String x;
+			for (int i=0;i<stc.size();i++) {
+				x = stc.get(i);
+				if (!ntc.contains(x))
+					ntc.add(x);
+			}
+		}
+		result = database.putNode(node, true);
 		return result;
 	}
 

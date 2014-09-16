@@ -3,8 +3,8 @@
  */
 package org.topicquests.topicmap.json.model.api;
 
-import org.topicquests.model.api.provider.ITopicDataProvider;
 import org.topicquests.model.api.node.INode;
+import org.topicquests.model.api.provider.ITopicDataProvider;
 import org.topicquests.model.api.ITicket;
 import org.topicquests.topicmap.json.merge.VirtualizerHandler;
 import org.topicquests.common.api.IResult;
@@ -16,6 +16,12 @@ import org.topicquests.common.api.IResult;
 public interface IJSONTopicDataProvider extends ITopicDataProvider {
 	public static String
 			AIR_INDEX		= "airs"; // correlates with jsonblobstore-props.xml
+	
+	/**
+	 * Return an {@link ICitationModel} instance
+	 * @return
+	 */
+	ICitationModel getCitationModel();
 	
 	/**
 	 * <p>This accepts an {@link INode} and imports it</p>

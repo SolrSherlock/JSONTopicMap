@@ -68,25 +68,41 @@ public class MergeInterceptor {
 	 * @param data
 	 */
 	void serveData(String data) {
+		ServerSocket srvr = null;
+		Socket skt = null;
 	    try {
-	        ServerSocket srvr = new ServerSocket(myPort);
+	        srvr = new ServerSocket(myPort);
 	        //java.net.BindException: Address already in use: JVM_Bind
 	        System.out.println("DocumentProcessor socket "+srvr);
-	        Socket skt = srvr.accept();
+	        skt = srvr.accept();
 	        System.out.print("Server has connected!\n");
 	        PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
 	        System.out.print("Sending string: '" + data + "'\n");
 	        out.print(data);
+	        out.flush();
 	        out.close();
-	        skt.close();
-	        srvr.close();
 	    }
 	    catch(Exception e) {
 	        System.out.print("Whoops! MergeInterceptor didn't work!\n");
 	        e.printStackTrace();
 	        //TODO figure out how to get this into Solr's logging system
+	    } finally {
+	    	try {
+	    		if (skt != null)
+	    			skt.close();
+	    	} catch (Exception e) {
+	    		e.printStackTrace();
+	    	}
+	    	try {
+	    		if (srvr != null)
+	    			srvr.close();
+	    	} catch (Exception x) {
+	    		x.printStackTrace();
+	    	}
+
 	    }
 	}
+	
 	class Worker extends Thread {
 		private List<INode>documents;
 

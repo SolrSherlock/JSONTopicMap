@@ -51,11 +51,14 @@ import org.topicquests.persist.json.api.IJSONDocStoreModel;
 import org.topicquests.topicmap.json.merge.DefaultVirtualizer;
 import org.topicquests.topicmap.json.merge.MergeInterceptor;
 import org.topicquests.topicmap.json.merge.VirtualizerHandler;
+import org.topicquests.topicmap.json.model.CitationModel;
 import org.topicquests.topicmap.json.model.CredentialUtility;
 import org.topicquests.topicmap.json.model.JSONTopicmapEnvironment;
 import org.topicquests.topicmap.json.model.NodeQuery;
 import org.topicquests.topicmap.json.model.TopicMapXMLExporter;
 import org.topicquests.topicmap.json.model.TupleQuery;
+import org.topicquests.topicmap.json.model.api.ICitationModel;
+import org.topicquests.topicmap.json.model.api.IErrorMessages;
 import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.topicmap.json.model.api.IJSONTopicMapOntology;
 import org.topicquests.topicmap.json.model.api.IMergeResultsListener;
@@ -63,7 +66,7 @@ import org.topicquests.topicmap.json.model.api.ITreeNode;
 import org.topicquests.topicmap.json.model.api.IVirtualizer;
 import org.topicquests.topicmap.json.util.TreeNode;
 import org.topicquests.util.ConcurrentLRUCache;
-import org.topicquests.topicmap.json.model.NodeModel;
+import org.topicquests.model.NodeModel;
 
 /**
  * @author park
@@ -76,6 +79,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	private IMergeImplementation merger = null;//not used here
 	private INodeModel _model;
 	private ITupleQuery tupleQuery;
+	private ICitationModel citationModel;
 	private TopicMapXMLExporter exporter;
 	private MergeInterceptor interceptor;
 	private VirtualizerHandler mergePerformer;
@@ -98,11 +102,12 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 		environment = env;
 		jsonEnvironment = environment.getJSONEnvironment();
 		jsonModel =  jsonEnvironment.getModel();
+		citationModel = new CitationModel(environment,_model);
 		nodeCache = new LRUCache(cachesize); //new ConcurrentLRUCache(cachesize);
 		//maybe not sending in a merge engine
 		//The theory being that an external merge engine
 		// will be at work
-		_model = new NodeModel(environment,this,null,cachesize);
+		_model = new NodeModel(this,null,cachesize);
 		tupleQuery = new TupleQuery(this, jsonModel);
 		exporter = new TopicMapXMLExporter(this);
 		interceptor = new MergeInterceptor();
@@ -168,10 +173,51 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 						result.setResultObject(n);
 						//nodeCache.put(locator, n);
 						nodeCache.add(locator, n);
+					}	else {
+						result.setResultObject(null);
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
 					}
 				} catch (Exception e) {
 					environment.logError(e.getMessage(), e);
 					result.addErrorString(e.getMessage());
+					result.setResultObject(null);
+				}
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public IResult getNodeJSON(String locator, ITicket credentials) {
+		environment.logDebug("JSONDocStoreTopicMapProvider.getNode- "+locator);
+		//getDocument(String index, String type, String documentId)
+		Object nx = nodeCache.get(locator);
+		IResult result = null;
+		JSONObject jo = null;
+		if (nx != null) {
+			result = new ResultPojo();
+			jo = (JSONObject)((INode)nx).getProperties();
+			if (credentialUtil.checkCredentials(jo, credentials))
+				result.setResultObject(jo);
+			else {
+				result.setResultObject(null);
+				result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
+			}
+		} else {
+			result = jsonModel.getDocument(TOPIC_INDEX, CORE_TYPE, locator);
+			if (result.getResultObject() != null) {
+				try {
+					jo = (JSONObject)new JSONParser().parse((String)result.getResultObject());
+					if (credentialUtil.checkCredentials(jo, credentials))
+						result.setResultObject(jo);
+					else {
+						result.setResultObject(null);
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
+					}
+				} catch (Exception e) {
+					environment.logError(e.getMessage(), e);
+					result.addErrorString(e.getMessage());
+					result.setResultObject(null);
 				}
 			}
 		}
@@ -200,12 +246,12 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	 * @see org.topicquests.model.api.ITopicDataProvider#putNode(org.topicquests.model.api.INode)
 	 */
 	@Override
-	public IResult putNode(INode node) {
+	public IResult putNode(INode node, boolean checkVersion) {
 		environment.logDebug("JSONDocStoreTopicMapProvider.putNode- "+node);
 		nodeCache.remove(node.getLocator());
 		//putDocument(String id, String index, String type, String jsonString);
 		IResult result = jsonModel.putDocument(node.getLocator(), TOPIC_INDEX, 
-					CORE_TYPE, node.toJSON());
+					CORE_TYPE, node.toJSON(), true);
 		interceptor.acceptNodeForMerge(node);
 		return result;
 	}
@@ -214,11 +260,11 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	 * @see org.topicquests.model.api.ITopicDataProvider#putNodeNoMerge(org.topicquests.model.api.INode)
 	 */
 	@Override
-	public IResult putNodeNoMerge(INode node) {
+	public IResult putNodeNoMerge(INode node, boolean checkVersion) {
 		environment.logDebug("JSONDocStoreTopicMapProvider.putNodeNoMerge- "+node);
 		nodeCache.remove(node.getLocator());
 		IResult result = jsonModel.putDocument(node.getLocator(), TOPIC_INDEX, 
-				CORE_TYPE, node.toJSON());
+				CORE_TYPE, node.toJSON(), true);
 		return result;
 	}
 
@@ -316,6 +362,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 					jo = jsonToJSON(json);
 					if (credentialUtil.checkCredentials(jo,credentials)) 
 						nl.add(new Node(jo));
+					else
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
 					
 				}
 			} catch (Exception e) {
@@ -353,7 +401,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 					jo = jsonToJSON(json);
 					if (credentialUtil.checkCredentials(jo,credentials)) 
 						nl.add(new Node(jo));
-					
+					else
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
 				}
 			} catch (Exception e) {
 				jsonEnvironment.logError(e.getMessage(), e);
@@ -388,7 +437,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 					jo = jsonToJSON(json);
 					if (credentialUtil.checkCredentials(jo,credentials)) 
 						nl.add(new Node(jo));
-					
+					else
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
 				}
 			} catch (Exception e) {
 				jsonEnvironment.logError(e.getMessage(), e);
@@ -424,6 +474,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 					jo = jsonToJSON(json);
 					if (credentialUtil.checkCredentials(jo,credentials)) 
 						nl.add(new Node(jo));
+					else
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
 					
 				}
 			} catch (Exception e) {
@@ -460,6 +512,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 					jo = jsonToJSON(json);
 					if (credentialUtil.checkCredentials(jo,credentials)) 
 						nl.add(new Node(jo));
+					else
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
 					
 				}
 			} catch (Exception e) {
@@ -504,6 +558,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 					jo = jsonToJSON(json);
 					if (credentialUtil.checkCredentials(jo,credentials)) 
 						nl.add(new Node(jo));
+					else
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
 					
 				}
 			} catch (Exception e) {
@@ -547,6 +603,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 					jo = jsonToJSON(json);
 					if (credentialUtil.checkCredentials(jo,credentials)) 
 						nl.add(new Node(jo));
+					else
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
 					
 				}
 			} catch (Exception e) {
@@ -582,6 +640,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 					jo = jsonToJSON(json);
 					if (credentialUtil.checkCredentials(jo,credentials)) 
 						nl.add(new Node(jo));
+					else
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
 					
 				}
 			} catch (Exception e) {
@@ -634,6 +694,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 					jo = jsonToJSON(json);
 					if (credentialUtil.checkCredentials(jo,credentials)) 
 						nl.add(new Node(jo));
+					else
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
 					
 				}
 			} catch (Exception e) {
@@ -669,6 +731,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 					jo = jsonToJSON(json);
 					if (credentialUtil.checkCredentials(jo,credentials)) 
 						nl.add(new Node(jo));
+					else
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
 					
 				}
 			} catch (Exception e) {
@@ -683,8 +747,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	 * @see org.topicquests.model.api.ITopicDataProvider#putTuple(org.topicquests.model.api.ITuple)
 	 */
 	@Override
-	public IResult putTuple(ITuple tuple) {
-		return putNode(tuple);
+	public IResult putTuple(ITuple tuple, boolean checkVersion) {
+		return putNode(tuple, true);
 	}
 
 	/* (non-Javadoc)
@@ -700,10 +764,14 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 				if (credentialUtil.checkCredentials(jo, credentials)) {
 					ITuple n = new Node(jo);
 					result.setResultObject(n);
+				} else {
+					result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
+					result.setResultObject(null);
 				}
 			} catch (Exception e) {
 				environment.logError(e.getMessage(), e);
 				result.addErrorString(e.getMessage());
+				result.setResultObject(null);
 			}
 		}
 		return result;
@@ -713,8 +781,8 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	 * @see org.topicquests.model.api.ITopicDataProvider#updateNode(org.topicquests.model.api.INode)
 	 */
 	@Override
-	public IResult updateNode(INode node) {
-		return putNode(node);
+	public IResult updateNode(INode node, boolean checkVersion) {
+		return putNode(node, true);
 	}
 
 	/* (non-Javadoc)
@@ -922,7 +990,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	}
 	/////////////////////////////////
 	// AIRs
-	@Override
+/**	@Override
 	public IResult getAIRVersion(String airLocator, int version, ITicket credentials) {
 		String lox = makeAIRLocator(airLocator,Integer.toBinaryString(version));
 		IResult result = jsonModel.getDocument(IJSONTopicDataProvider.AIR_INDEX, CORE_TYPE, lox);
@@ -955,17 +1023,17 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	}
 
 	@Override
-	public IResult putAIRVersion(IAddressableInformationResource air) {
-		String lox = makeAIRLocator(air.getLocator(),Integer.toBinaryString(air.getVersion()));
+	public IResult putAIRVersion(IAddressableInformationResource air, boolean checkVersion) {
+		String lox = makeAIRLocator(air.getLocator(),Integer.toString(air.getAIRVersion()));
 		IResult result = jsonModel.putDocument(lox, IJSONTopicDataProvider.AIR_INDEX, 
-				CORE_TYPE, air.toJSON());
+				CORE_TYPE, air.toJSON(),true);
 		return result;
 	}
 	
 	private String makeAIRLocator(String locator, String version) {
 		return locator+"_"+version;
 	}
-
+**/
 	/////////////////////////////////
 	// Merge
 
@@ -1023,6 +1091,28 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 		// NOT USED
 		return null;
 	}
+
+	@Override
+	public ICitationModel getCitationModel() {
+		return citationModel;
+	}
+
+	@Override
+	public IResult existsNode(String locator) {
+		Object nx = nodeCache.get(locator);
+		IResult result = new ResultPojo();
+		if (nx != null) {
+			result.setResultObject(new Boolean(true));
+		} else {
+			result = jsonModel.getDocument(TOPIC_INDEX, CORE_TYPE, locator);
+			if (result.getResultObject() != null)
+				result.setResultObject(new Boolean(true));
+			else
+				result.setResultObject(new Boolean(false));
+		}
+		return result;
+	}
+
 
 
 
