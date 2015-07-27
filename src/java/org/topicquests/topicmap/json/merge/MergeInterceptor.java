@@ -83,6 +83,7 @@ public class MergeInterceptor {
 	        out.close();
 	    }
 	    catch(Exception e) {
+	    	//NOTE: this especially happens if there is no listener running
 	        System.out.print("Whoops! MergeInterceptor didn't work!\n");
 	        e.printStackTrace();
 	        //TODO figure out how to get this into Solr's logging system

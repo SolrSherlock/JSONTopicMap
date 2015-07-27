@@ -24,20 +24,23 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import net.minidev.json.*;
+import net.minidev.json.parser.*;
+
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+//import org.json.simple.JSONObject;
+//import org.json.simple.parser.JSONParser;
 import org.nex.util.LRUCache;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IMergeRuleMethod;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
-import org.topicquests.model.Environment;
+//import org.topicquests.model.Environment;
 import org.topicquests.model.api.IEnvironment;
 import org.topicquests.model.api.IMergeImplementation;
-import org.topicquests.model.api.node.IAddressableInformationResource;
+//import org.topicquests.model.api.node.IAddressableInformationResource;
 import org.topicquests.model.api.node.INode;
 import org.topicquests.model.api.node.INodeModel;
 import org.topicquests.model.api.query.INodeQuery;
@@ -48,7 +51,7 @@ import org.topicquests.model.Node;
 import org.topicquests.model.api.IXMLFields;
 import org.topicquests.persist.json.JSONDocStoreEnvironment;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
-import org.topicquests.topicmap.json.merge.DefaultVirtualizer;
+//import org.topicquests.topicmap.json.merge.DefaultVirtualizer;
 import org.topicquests.topicmap.json.merge.MergeInterceptor;
 import org.topicquests.topicmap.json.merge.VirtualizerHandler;
 import org.topicquests.topicmap.json.model.CitationModel;
@@ -66,7 +69,7 @@ import org.topicquests.topicmap.json.model.api.ITreeNode;
 import org.topicquests.topicmap.json.model.api.IVirtualizer;
 import org.topicquests.topicmap.json.util.TreeNode;
 import org.topicquests.util.ConcurrentLRUCache;
-import org.topicquests.model.NodeModel;
+import org.topicquests.topicmap.json.model.NodeModel;
 
 /**
  * @author park
@@ -107,12 +110,12 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 		//maybe not sending in a merge engine
 		//The theory being that an external merge engine
 		// will be at work
-		_model = new NodeModel(this,null,cachesize);
+		_model = new NodeModel(environment,this, null,cachesize);
 		tupleQuery = new TupleQuery(this, jsonModel);
 		exporter = new TopicMapXMLExporter(this);
 		interceptor = new MergeInterceptor();
 		credentialUtil = new CredentialUtility(this,jsonModel);
-		environment.logDebug("JSONDocStoreTopicMapProvider.init "+environment+" "+jsonEnvironment+" "+jsonModel);		
+		//environment.logDebug("JSONDocStoreTopicMapProvider.init "+environment+" "+jsonEnvironment+" "+jsonModel);		
 	}
 	
 	/* (non-Javadoc)
@@ -156,7 +159,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	 */
 	@Override
 	public IResult getNode(String locator, ITicket  credentials) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.getNode- "+locator);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.getNode- "+locator);
 		//getDocument(String index, String type, String documentId)
 		Object nx = nodeCache.get(locator);
 		IResult result = null;
@@ -167,7 +170,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 			result = jsonModel.getDocument(TOPIC_INDEX, CORE_TYPE, locator);
 			if (result.getResultObject() != null) {
 				try {
-					JSONObject jo = (JSONObject)new JSONParser().parse((String)result.getResultObject());
+					JSONObject jo = (JSONObject)new JSONParser(JSONParser.MODE_JSON_SIMPLE).parse((String)result.getResultObject());
 					if (credentialUtil.checkCredentials(jo, credentials)) {
 						INode n = new Node(jo);
 						result.setResultObject(n);
@@ -189,7 +192,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 
 	@Override
 	public IResult getNodeJSON(String locator, ITicket credentials) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.getNode- "+locator);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.getNode- "+locator);
 		//getDocument(String index, String type, String documentId)
 		Object nx = nodeCache.get(locator);
 		IResult result = null;
@@ -207,7 +210,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 			result = jsonModel.getDocument(TOPIC_INDEX, CORE_TYPE, locator);
 			if (result.getResultObject() != null) {
 				try {
-					jo = (JSONObject)new JSONParser().parse((String)result.getResultObject());
+					jo = (JSONObject)new JSONParser(JSONParser.MODE_JSON_SIMPLE).parse((String)result.getResultObject());
 					if (credentialUtil.checkCredentials(jo, credentials))
 						result.setResultObject(jo);
 					else {
@@ -229,29 +232,70 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	 */
 	@Override
 	public IResult getNodeView(String locator, ITicket  credentials) {
+		IResult result = new ResultPojo();
 		// TODO Auto-generated method stub
-		return null;
+		return result;
 	}
 
+	/////////////////////////////////////////////////////////////
+	//Removing a node is messy.
+	// First, a node as pivots and other relations
+	// Second, a node might have parents or children
+	// Third, a node might be transcluded to some place, in which case, it cannot be removed,
+	//   but rather, the transclusion links are removed
+	// Fourth, a node might be transcluded elsewhere, in which case, those transclusions need to be muted
+	//   as well. Typical transclusions are in terms of parent-child relations
+	// Fifth, a node might be a member of a merged ensemble; its values must be
+	//   excised from the virtual node to which it is merged, and its merge relation removed
+	//   Which brings us to another issue: if it is unmerged, we need to leave it alone and
+	//    visible, and add an unmerge with reason link.
+	//   We should never get here from an unmerge
+	//////////////////////////////////////////////////////////////
+	// Settled:
+	//   We set the given node to isLive = false
+	// STILL MUST DEAL WITH children and relations
+	//   If you just set the node to isLive = false, and do nothing else,
+	//   Then the node will still appear in relations and parent nodes
+	//////////////////////////////////////////////////////////////
 	/* (non-Javadoc)
-	 * @see org.topicquests.model.api.ITopicDataProvider#removeNode(java.lang.String)
+	 * @see org.topicquests.model.api.ITopicDataProvider#removeNode(...)
 	 */
 	@Override
-	public IResult removeNode(String locator) {
-		// TODO Auto-generated method stub
-		return null;
+	public IResult removeNode(INode node, ITicket credentials) {
+		IResult result = new ResultPojo();
+		//first, set not live
+		node.setIsLive(false);
+		//save it
+		IResult r = this.putNode(node, false);
+		//now, deal with its network
+		//TODO
+		return result;
 	}
+	/* (non-Javadoc)
+	 * @see org.topicquests.model.api.ITopicDataProvider#removeNode(...)
+	 */
+	@Override
+	public IResult removeNode(String locator, ITicket credentials) {
+		IResult result = new ResultPojo();
+		IResult r = this.getNode(locator, credentials);
+		INode n = (INode)r.getResultObject();
+		if (r.hasError()) result.addErrorString(r.getErrorString());
+		r = removeNode(n, credentials);
+		if (r.hasError()) result.addErrorString(r.getErrorString());
+		return result;
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see org.topicquests.model.api.ITopicDataProvider#putNode(org.topicquests.model.api.INode)
 	 */
 	@Override
 	public IResult putNode(INode node, boolean checkVersion) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.putNode- "+node);
-		nodeCache.remove(node.getLocator());
+		//environment.logDebug("JSONDocStoreTopicMapProvider.putNode- "+node);
+		nodeCache.add(node.getLocator(),node);
 		//putDocument(String id, String index, String type, String jsonString);
 		IResult result = jsonModel.putDocument(node.getLocator(), TOPIC_INDEX, 
-					CORE_TYPE, node.toJSON(), true);
+					CORE_TYPE, (JSONObject)node.getProperties(), true);
 		interceptor.acceptNodeForMerge(node);
 		return result;
 	}
@@ -261,10 +305,10 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	 */
 	@Override
 	public IResult putNodeNoMerge(INode node, boolean checkVersion) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.putNodeNoMerge- "+node);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.putNodeNoMerge- "+node);
 		nodeCache.remove(node.getLocator());
 		IResult result = jsonModel.putDocument(node.getLocator(), TOPIC_INDEX, 
-				CORE_TYPE, node.toJSON(), true);
+				CORE_TYPE, (JSONObject)node.getProperties(), true);
 		return result;
 	}
 
@@ -272,33 +316,24 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	 * @see org.topicquests.model.api.ITopicDataProvider#getVirtualNodeIfExists(java.lang.String, java.util.Set)
 	 */
 	@Override
-	public IResult getVirtualNodeIfExists(String locator,
-										ITicket  credentials) {
-//		String query = ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE+":"+ITopicQuestsOntology.MERGE_ASSERTION_TYPE+
-//		" AND "+ITopicQuestsOntology.TUPLE_OBJECT_PROPERTY+":"+locator;
-		BoolQueryBuilder qba = QueryBuilders.boolQuery();
-		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, ITopicQuestsOntology.MERGE_ASSERTION_TYPE);
-		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.TUPLE_OBJECT_PROPERTY, locator);
-		qba.must(qb1);
-		qba.must(qb2);		
-		environment.logDebug("JSONDocStoreTopicMapProvider.getVirtualNodeIfExists- "+qba.toString());
-		IResult result =  jsonModel.runQuery(TOPIC_INDEX, qba, 0, -1, CORE_TYPE);
-		if (result.getResultObject() != null) {
-			result.setResultObject(null);
-			List<String>docs = (List<String>)result.getResultObject();
-			String json;
-			INode n;
-			JSONObject jo;
-			try {
-				//There can be only one merged on the given node
-				jo = jsonToJSON(docs.get(0));
-				//This is the tuple
-				String subjLoc = (String)jo.get(ITopicQuestsOntology.TUPLE_SUBJECT_PROPERTY);
-				return this.getNode(subjLoc, credentials);
-			} catch (Exception e) {
-				jsonEnvironment.logError(e.getMessage(), e);
-				result.addErrorString(e.getMessage());
-			}
+	public IResult getVirtualNodeIfExists(INode node, ITicket  credentials) {
+		IResult result = new ResultPojo();
+		List<String> tups = node.listMergeTupleLocators();
+		//a merged node should have just one-- that is tups.size() == 1
+		//a virtualnode could have many
+		if (node.getIsVirtualProxy() ) {
+			result.setResultObject(node);
+		} else if (tups != null) {
+			String tuplox = tups.get(0);
+			IResult r = this.getNode(tuplox, credentials);
+			ITuple tup = (ITuple)r.getResultObject();
+			if (r.hasError()) result.addErrorString(r.getErrorString());
+			//this ITuple has this node as object, virtualnode as subject
+			//see BaseVirtualizer.relateNodes
+			tuplox = tup.getSubjectLocator();
+			r = this.getNode(tuplox, credentials);
+			result.setResultObject(r.getResultObject());
+			if (r.hasError()) result.addErrorString(r.getErrorString());
 		}
 		return result;
 	}
@@ -316,7 +351,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 		qb.must(qb3);
 		qb.should(qb1);
 		qb.should(qb2);
-		environment.logDebug("JSONDocStoreTopicMapProvider.existsTupleBySubjectOrObjectAndRelation- "+qb.toString());
+		//environment.logDebug("JSONDocStoreTopicMapProvider.existsTupleBySubjectOrObjectAndRelation- "+qb.toString());
 		IResult result =  jsonModel.runQuery(TOPIC_INDEX, qb, 0, -1, CORE_TYPE);
 		if (result.getResultObject() != null)
 			result.setResultObject(new Boolean(true));
@@ -344,7 +379,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	@Override
 	public IResult listNodesByPSI(String psi, int start, int count,
 			ITicket  credentials) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByPSI- "+psi);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByPSI- "+psi);
 //listDocumentsByProperty(String index, String key, String value, int start, int count, String... types)
 		IResult result = jsonModel.listDocumentsByProperty(TOPIC_INDEX, ITopicQuestsOntology.PSI_PROPERTY_TYPE, 
 				psi, start, count, CORE_TYPE);
@@ -385,7 +420,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, typeLocator);
 		qb.must(qb1);
 		qb.should(qb2);
-		environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByLabelAndType- "+qb.toString());
+		//environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByLabelAndType- "+qb.toString());
 		IResult result =  jsonModel.runQuery(TOPIC_INDEX, qb, 0, -1, CORE_TYPE);
 		if (result.getResultObject() != null) {
 			List<String>docs = (List<String>)result.getResultObject();
@@ -418,7 +453,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	@Override
 	public IResult listNodesByLabel(String label, String language, int start, int count,
 			ITicket  credentials) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByLabel- "+label);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByLabel- "+label);
 //listDocumentsByProperty(String index, String key, String value, int start, int count, String... types)
 		String labprop = makeField(ITopicQuestsOntology.LABEL_PROPERTY, language);
 		IResult result = jsonModel.listDocumentsByProperty(TOPIC_INDEX, labprop, 
@@ -454,7 +489,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	@Override
 	public IResult listNodesByLabelLike(String labelFragment, String language, int start,
 			int count, ITicket  credentials) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByLabelLike- "+labelFragment);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByLabelLike- "+labelFragment);
 //listDocumentsByProperty(String index, String key, String value, int start, int count, String... types)
 		String labprop = makeField(ITopicQuestsOntology.LABEL_PROPERTY, language);
 		IResult result = jsonModel.listDocumentsByWildcardPropertyValue(TOPIC_INDEX, labprop, 
@@ -492,7 +527,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	@Override
 	public IResult listNodesByDetailsLike(String detailsFragment, String language, int start,
 			int count, ITicket  credentials) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByDetailsLike- "+detailsFragment);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByDetailsLike- "+detailsFragment);
 //listDocumentsByProperty(String index, String key, String value, int start, int count, String... types)
 		String detprop = makeField(ITopicQuestsOntology.DETAILS_PROPERTY, language);
 		IResult result = jsonModel.listDocumentsByWildcardPropertyValue(TOPIC_INDEX, detprop, 
@@ -540,7 +575,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	@Override
 	public IResult listNodesByCreatorId(String creatorId, int start, int count,
 			ITicket  credentials) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByCreatorId- "+creatorId);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.listNodesByCreatorId- "+creatorId);
 //listDocumentsByProperty(String index, String key, String value, int start, int count, String... types)
 		IResult result = jsonModel.listDocumentsByProperty(TOPIC_INDEX, ITopicQuestsOntology.CREATOR_ID_PROPERTY, 
 				creatorId, start, count, CORE_TYPE);
@@ -585,7 +620,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	@Override
 	public IResult listTuplesBySignature(String signature, int start,
 			int count, ITicket  credentials) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.listTuplesBySignature- "+signature);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.listTuplesBySignature- "+signature);
 //listDocumentsByProperty(String index, String key, String value, int start, int count, String... types)
 		IResult result = jsonModel.listDocumentsByProperty(TOPIC_INDEX, ITopicQuestsOntology.TUPLE_SIGNATURE_PROPERTY, 
 				signature, start, count, CORE_TYPE);
@@ -621,7 +656,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	@Override
 	public IResult listInstanceNodes(String typeLocator, int start, int count,
 			ITicket  credentials) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.listInstanceNodes- "+typeLocator);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.listInstanceNodes- "+typeLocator);
 //listDocumentsByProperty(String index, String key, String value, int start, int count, String... types)
 		IResult result = jsonModel.listDocumentsByProperty(TOPIC_INDEX, ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, 
 				typeLocator, start, count, CORE_TYPE);
@@ -678,7 +713,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 		qbc.should(qba);
 		qbc.should(qbb);
 		
-		environment.logDebug("JSONDocStoreTopicMapProvider.listTrimmedInstanceNodes- "+qbc.toString());
+		//environment.logDebug("JSONDocStoreTopicMapProvider.listTrimmedInstanceNodes- "+qbc.toString());
 		IResult result =  jsonModel.runQuery(TOPIC_INDEX, qbc, 0, -1, CORE_TYPE);
 		if (result.getResultObject() != null) {
 			List<String>docs = (List<String>)result.getResultObject();
@@ -712,10 +747,11 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	@Override
 	public IResult listSubclassNodes(String superclassLocator, int start,
 			int count, ITicket  credentials) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.listSubclassNodes- "+superclassLocator);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.listSubclassNodes- "+superclassLocator);
 //listDocumentsByProperty(String index, String key, String value, int start, int count, String... types)
 		IResult result = jsonModel.listDocumentsByProperty(TOPIC_INDEX, ITopicQuestsOntology.SUBCLASS_OF_PROPERTY_TYPE, 
 				superclassLocator, start, count, CORE_TYPE);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.listSubclassNodes-1 "+result.getResultObject());
 		if (result.getResultObject() != null) {
 			List<String>docs = (List<String>)result.getResultObject();
 			System.out.println("LISTSUBS "+docs.size());
@@ -756,11 +792,11 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	 */
 	@Override
 	public IResult getTuple(String tupleLocator, ITicket  credentials) {
-		environment.logDebug("JSONDocStoreTopicMapProvider.getTuple- "+tupleLocator);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.getTuple- "+tupleLocator);
 		IResult result = jsonModel.getDocument(TOPIC_INDEX, CORE_TYPE, tupleLocator);
 		if (result.getResultObject() != null) {
 			try {
-				JSONObject jo = (JSONObject)new JSONParser().parse((String)result.getResultObject());
+				JSONObject jo = (JSONObject)new JSONParser(JSONParser.MODE_JSON_SIMPLE).parse((String)result.getResultObject());
 				if (credentialUtil.checkCredentials(jo, credentials)) {
 					ITuple n = new Node(jo);
 					result.setResultObject(n);
@@ -852,64 +888,15 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 	 */
 	@Override
 	public IResult createMergeRule(IMergeRuleMethod theMethod) {
+		IResult result = new ResultPojo();
 		// TODO Auto-generated method stub
-		return null;
+		return result;
 	}
 
 	private JSONObject jsonToJSON(String json) throws Exception {
-		return (JSONObject)new JSONParser().parse(json);
+		return (JSONObject)new JSONParser(JSONParser.MODE_JSON_SIMPLE).parse(json);
 	}
 	
-	/**
-	 * A recursive call to walk up the isA hierarchy, if any, above the
-	 * @param locator
-	 * @param typeTargetLocator
-	 * @param credentials
-	 * @return IResult.returnObject = <code>null</code> if not found. Any non-null means found
-	 * /
-	private IResult walkUpTransitiveClosure(String locator, String typeTargetLocator, ITicket credentials) {
-		IResult result = new ResultPojo();
-		result.setResultObject(null);
-		IResult temp = getNode(locator,credentials);
-		INode child = (INode)temp.getResultObject();
-		temp.setResultObject(null);
-		if (temp.hasError())
-			result.addErrorString(temp.getErrorString());
-		if (child != null) {
-			//The cases where that could be null are:
-			//  database error (node's there, system failed)
-			//  lack of appropriate credentials (private node)
-			List<String> supers = child.listSuperclassIds();
-			String type = child.getNodeType();
-			if (type.equals(typeTargetLocator)) {
-				result.setResultObject(child);
-				return result;
-			} else {
-				temp = walkUpTransitiveClosure(type,typeTargetLocator,credentials);
-				if (temp.hasError())
-					result.addErrorString(temp.getErrorString());
-				if (temp.getResultObject() != null) {
-					result.setResultObject(temp.getResultObject());
-					return result;
-				}
-			}
-			if (supers != null && supers.size() > 0) {
-				Iterator<String>itr = supers.iterator();
-				while (itr.hasNext()) {
-					temp = walkUpTransitiveClosure(itr.next(),typeTargetLocator,credentials);
-					if (temp.hasError())
-						result.addErrorString(temp.getErrorString());
-					if (temp.getResultObject() != null) {
-						result.setResultObject(temp.getResultObject());
-						return result;
-					}
-				}
-			}
-		}
-		return result;
-	}
-	*/
-
 	@Override
 	public void updateNodeFromXML(String nodeXML) {
 		// TODO Auto-generated method stub
@@ -936,7 +923,7 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 		result.setResultObject(root);
 		//now populate its child nodes
 		recursiveWalkDownTree(result,root,maxDepth,maxDepth,start,count,credentials);
-		environment.logDebug("JSONDocStoreTopicMapProvider.loadTree "+rootNodeLocator+" "+root.getSubclassCount()+" "+root.getInstanceCount());
+		//environment.logDebug("JSONDocStoreTopicMapProvider.loadTree "+rootNodeLocator+" "+root.getSubclassCount()+" "+root.getInstanceCount());
 		return result;
 	}
 	
@@ -1110,6 +1097,107 @@ public class JSONDocStoreTopicMapProvider implements IJSONTopicDataProvider {
 			else
 				result.setResultObject(new Boolean(false));
 		}
+		return result;
+	}
+
+	@Override
+	public IResult getNodeByPSI(String psi, ITicket credentials) {
+		BoolQueryBuilder qb = QueryBuilders.boolQuery();
+		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.PSI_PROPERTY_TYPE, psi);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.existsTupleBySubjectOrObjectAndRelation- "+qb.toString());
+		IResult result =  jsonModel.runQuery(TOPIC_INDEX, qb, 0, -1, CORE_TYPE);
+		if (result.getResultObject() != null) {
+			String json = (String)result.getResultObject();
+			try {
+
+				JSONObject jo = jsonToJSON(json);
+				if (credentialUtil.checkCredentials(jo,credentials)) 
+					result.setResultObject(new Node(jo));
+				else {
+					result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
+					result.setResultObject(null);
+				}
+			} catch (Exception e) {
+				jsonEnvironment.logError(e.getMessage(), e);
+				result.addErrorString(e.getMessage());
+			}
+		}
+		return result;
+	}
+
+/**	@Override
+	public IResult getNodeByURL(String url, ITicket credentials) {
+		BoolQueryBuilder qb = QueryBuilders.boolQuery();
+		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.RESOURCE_URL_PROPERTY, url);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.existsTupleBySubjectOrObjectAndRelation- "+qb.toString());
+		IResult result =  jsonModel.runQuery(TOPIC_INDEX, qb, 0, -1, CORE_TYPE);
+		if (result.getResultObject() != null) {
+			List<String> l = (List<String>)result.getResultObject();
+			String json;
+			if (l != null && !l.isEmpty()) {
+				json = l.get(0);
+				try {
+	
+					JSONObject jo = jsonToJSON(json);
+					if (credentialUtil.checkCredentials(jo,credentials)) 
+						result.setResultObject(new Node(jo));
+					else {
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
+						result.setResultObject(null);
+					}
+				} catch (Exception e) {
+					jsonEnvironment.logError(e.getMessage(), e);
+					result.addErrorString(e.getMessage());
+				}
+			}
+		}
+		return result;
+	}
+*/
+
+	@Override
+	public IResult listNodesByTypeAndURL(String type, String url,
+			ITicket credentials) {
+		BoolQueryBuilder qb = QueryBuilders.boolQuery();
+		QueryBuilder qb1 = QueryBuilders.termQuery(ITopicQuestsOntology.SUBCLASS_OF_PROPERTY_TYPE, type);
+		QueryBuilder qb2 = QueryBuilders.termQuery(ITopicQuestsOntology.INSTANCE_OF_PROPERTY_TYPE, type);
+		QueryBuilder qb3 = QueryBuilders.termQuery(ITopicQuestsOntology.RESOURCE_URL_PROPERTY, url);
+		qb.must(qb3);
+		qb.should(qb1);
+		qb.should(qb2);
+		//environment.logDebug("JSONDocStoreTopicMapProvider.existsTupleBySubjectOrObjectAndRelation- "+qb.toString());
+		IResult result =  jsonModel.runQuery(TOPIC_INDEX, qb, 0, -1, CORE_TYPE);
+		if (result.getResultObject() != null) {
+			List<String>docs = (List<String>)result.getResultObject();
+			String json;
+			Iterator<String>itr = docs.iterator();
+			List<INode>nl = new ArrayList<INode>();
+			result.setResultObject(nl);
+			INode n;
+			JSONObject jo;
+			try {
+				while(itr.hasNext()) {
+					json = itr.next();
+					jo = jsonToJSON(json);
+					if (credentialUtil.checkCredentials(jo,credentials)) 
+						nl.add(new Node(jo));
+					else
+						result.addErrorString(IErrorMessages.CREDENTIAL_EXCEPTION);
+					
+				}
+			} catch (Exception e) {
+				jsonEnvironment.logError(e.getMessage(), e);
+				result.addErrorString(e.getMessage());
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public IResult updateNodeLabel(INode node, String oldLabel,
+			String newLabel, ITicket credentials) {
+		IResult result = new ResultPojo();
+		// TODO Auto-generated method stub
 		return result;
 	}
 

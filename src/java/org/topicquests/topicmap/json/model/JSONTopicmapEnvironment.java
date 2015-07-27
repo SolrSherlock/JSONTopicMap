@@ -22,9 +22,6 @@ import java.io.PrintWriter;
 import java.util.*;
 
 import org.nex.config.ConfigPullParser;
-import org.topicquests.model.BiblioBootstrap;
-import org.topicquests.model.CoreBootstrap;
-import org.topicquests.model.RelationsBootstrap;
 import org.topicquests.model.TicketPojo;
 import org.topicquests.model.api.provider.ITopicDataProvider;
 import org.topicquests.model.api.provider.IDataProvider;
@@ -43,6 +40,7 @@ import org.topicquests.topicmap.json.persist.JSONDocStoreTopicMapProvider;
 import org.topicquests.util.LoggingPlatform;
 import org.topicquests.util.Tracer;
 import org.topicquests.common.api.IConsoleDisplay;
+import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
 //import org.topicquests.topicmap.json.model.api.IExporterListener;
 import org.topicquests.topicmap.json.mp.AMPQHandler;
@@ -142,26 +140,20 @@ public class JSONTopicmapEnvironment
 		sameLabelMerger = new SameLabelMergeHandler(this);
 		System.out.println("JSONTOPICMAPENV-5");
 //		messenger = new AMPQHandler(this);
-//		boolean shouldBootstrap = false; // default value
-//		if (bs != null)
-//			shouldBootstrap = bs.equalsIgnoreCase("Yes");
-//		if (shouldBootstrap)
-//			bootstrap();
+		boolean shouldBootstrap = false; // default value
+		if (bs != null)
+			shouldBootstrap = bs.equalsIgnoreCase("Yes");
+		if (shouldBootstrap)
+			bootstrap();
 		System.out.println("HELLO WORLD");
-		jsonBootstrapper = new JSONBootstrap(this);
-		jsonBootstrapper.bootstrap();
 	}
 	
 	/**
-	 * Available to extensions if needed
+	 * Available to extensions if needed by way of additional JSON files
 	 */
 	public void bootstrap() {
-		CoreBootstrap cbs = new CoreBootstrap(dataProvider);
-		cbs.bootstrap();
-		BiblioBootstrap bbs = new BiblioBootstrap(dataProvider);
-		bbs.bootstrap();
-		RelationsBootstrap rbs = new RelationsBootstrap(dataProvider);
-		rbs.bootstrap();
+		JSONBootstrap bs = new JSONBootstrap(this);
+		IResult r = bs.bootstrap();
 	}
 	
 	public IQueryModel getQueryModel() {

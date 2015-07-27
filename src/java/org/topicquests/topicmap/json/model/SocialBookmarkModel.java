@@ -8,8 +8,8 @@ import java.util.*;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+//import org.json.simple.JSONObject;
+//import org.json.simple.parser.JSONParser;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.ICoreIcons;
 import org.topicquests.common.api.INodeTypes;
@@ -26,6 +26,8 @@ import org.topicquests.topicmap.json.model.api.IJSONTopicMapOntology;
 import org.topicquests.topicmap.json.model.api.ISocialBookmarkLegend;
 import org.topicquests.topicmap.json.model.api.ISocialBookmarkModel;
 import org.topicquests.model.Node;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 
 /**
  * @author park
@@ -90,7 +92,7 @@ public class SocialBookmarkModel implements ISocialBookmarkModel {
 			System.out.println("BOOKMARKS "+json);
 			if (json != null && !json.isEmpty()) {
 				try {
-					JSONObject jo = (JSONObject)new JSONParser().parse(json.get(0));
+					JSONObject jo = (JSONObject)new JSONParser(JSONParser.MODE_JSON_SIMPLE).parse(json.get(0));
 					theBookmark = new Node(jo);
 				} catch (Exception e) {
 					result.addErrorString(e.getMessage());

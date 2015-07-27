@@ -25,8 +25,11 @@ import org.topicquests.model.api.provider.ITopicDataProvider;
 import org.topicquests.model.api.node.INode;
 import org.topicquests.model.Node;
 import org.topicquests.model.api.query.IQueryIterator;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+//import org.json.simple.JSONObject;
+//import org.json.simple.parser.JSONParser;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+
 /**
  * @author park
  *
@@ -96,7 +99,7 @@ public class QueryIterator implements IQueryIterator {
 		if (x.hasError())
 			result.addErrorString(x.getErrorString());
 		if (jsonStrings != null && !jsonStrings.isEmpty()) {
-			JSONParser p = new JSONParser();
+			JSONParser p = new JSONParser(JSONParser.MODE_JSON_SIMPLE);
 			List<INode>nodes = new ArrayList<INode>();
 			result.setResultObject(nodes);
 			try {

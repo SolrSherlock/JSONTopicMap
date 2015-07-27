@@ -17,8 +17,11 @@ package org.topicquests.topicmap.json.model;
 
 import java.util.*;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import net.minidev.json.JSONObject;
+//import net.minidev.json.parser.JSONParser;
+
+//import org.json.simple.JSONObject;
+//import org.json.simple.parser.JSONParser;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;

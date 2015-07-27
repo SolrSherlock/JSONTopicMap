@@ -206,14 +206,15 @@ public class BaseVirtualizer {
 		IResult result = new ResultPojo();
 		String signature = virtualNode.getLocator()+ITopicQuestsOntology.MERGE_ASSERTION_TYPE+targetNode.getLocator();
 		//NOTE that we make the tuple an instance of the relation type, not of TUPLE_TYPE
-		ITuple t = (ITuple)nodeModel.newInstanceNode(relationTypeLocator, relationTypeLocator, 
+		ITuple t = (ITuple)nodeModel.newInstanceNode(signature, relationTypeLocator, 
 				virtualNode.getLocator()+" "+relationTypeLocator+" "+targetNode.getLocator(), "en", userId, smallImagePath, largeImagePath, isPrivate);
 		t.setIsTransclude(isTransclude);
+		//NOTE: tuple object is always merged node
 		t.setObject(targetNode.getLocator());
 		t.setObjectType(ITopicQuestsOntology.NODE_TYPE);
+		//NOTE: tuple subject is always virtualProxy
 		t.setSubjectLocator(virtualNode.getLocator());
 		t.setSubjectType(ITopicQuestsOntology.NODE_TYPE);
-		t.setSignature(signature);
 		Iterator<String>itx = mergeData.keySet().iterator();
 		String reason;
 		while (itx.hasNext()) {

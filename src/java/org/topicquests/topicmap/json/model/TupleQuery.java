@@ -20,8 +20,8 @@ import java.util.*;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+//import org.json.simple.JSONObject;
+//import org.json.simple.parser.JSONParser;
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
 import org.topicquests.common.api.ITopicQuestsOntology;
@@ -34,6 +34,8 @@ import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.topicmap.json.model.api.IJSONTopicMapOntology;
 import org.topicquests.util.LoggingPlatform;
 import org.topicquests.model.Node;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 
 /**
  * @author park
@@ -372,7 +374,7 @@ public class TupleQuery implements ITupleQuery {
 	}
 
 	private JSONObject jsonToJSON(String json) throws Exception {
-		return (JSONObject)new JSONParser().parse(json);
+		return (JSONObject)new JSONParser(JSONParser.MODE_JSON_SIMPLE).parse(json);
 	}
 
 	@Override

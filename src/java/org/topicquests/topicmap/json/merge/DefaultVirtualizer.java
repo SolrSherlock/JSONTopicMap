@@ -52,14 +52,14 @@ public class DefaultVirtualizer extends BaseVirtualizer implements IVirtualizer 
 			return result;
 		//Have these two, or either one of them, been merged before?
 		//TODO rewrite this with primaryIsMerged and mergedIsMerged
-		IResult r = database.getVirtualNodeIfExists(primary.getLocator(), credentials);
+		IResult r = database.getVirtualNodeIfExists(primary, credentials);
 		if (r.hasError())
 			result.addErrorString(r.getErrorString());
 		if (r.getResultObject() != null) {
 			virtualNode = (INode)r.getResultObject();
 			primaryHadVirtual = true;
 		} else {
-			r = database.getVirtualNodeIfExists(merge.getLocator(), credentials);
+			r = database.getVirtualNodeIfExists(merge, credentials);
 			if (r.hasError())
 				result.addErrorString(r.getErrorString());
 			if (r.getResultObject() != null)

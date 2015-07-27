@@ -65,4 +65,33 @@ public interface IJSONTopicDataProvider extends ITopicDataProvider {
 	 * @param n
 	 */
 	void recycleNode(INode n);
+	
+	//////////////////////////////////////
+	// Additional API 
+	//////////////////////////////////////
+	
+	IResult getNodeByPSI(String psi, ITicket credentials);
+	
+	/**
+	 * A <code>url</code> is like a PSI: it's an identity property
+	 * @param url
+	 * @param credentials
+	 * @return
+	 */ //killed because URL is not going to be like PSI
+	//IResult getNodeByURL(String url, ITicket credentials);
+	
+	IResult listNodesByTypeAndURL(String type, String url, ITicket credentials);
+	
+	/**
+	 * Update <code>node<code> which had its label or subject changed. This entails
+	 * patching every node that references <code>proxy</code> using its label or subject
+	 * @param node
+	 * @param oldLabel
+	 * @param newLabel
+	 * @param credentials
+	 * @return
+	 */
+	IResult updateNodeLabel(INode node, String oldLabel, String newLabel, ITicket credentials);
+	
+	
 }

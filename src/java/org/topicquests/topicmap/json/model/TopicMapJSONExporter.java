@@ -19,7 +19,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+//import java.util.Set;
 
 import org.topicquests.common.ResultPojo;
 import org.topicquests.common.api.IResult;
@@ -27,11 +27,12 @@ import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.api.node.INode;
 import org.topicquests.model.api.node.ITuple;
 import org.topicquests.model.api.ITicket;
-import org.topicquests.topicmap.json.model.TopicMapXMLExporter.Worker;
+//import org.topicquests.topicmap.json.model.TopicMapXMLExporter.Worker;
 import org.topicquests.topicmap.json.model.api.IExporterListener;
 import org.topicquests.topicmap.json.model.api.IJSONTopicDataProvider;
 import org.topicquests.util.LoggingPlatform;
-import org.json.simple.JSONObject;
+//import org.json.simple.JSONObject;
+import net.minidev.json.JSONObject;
 
 /**
  * @author park
@@ -180,7 +181,7 @@ public class TopicMapJSONExporter {
 					nodes = (List<INode>)xx.getResultObject();
 				}
 				//tuples next
-				List<String> tuples = n.listTuples();
+				List<String> tuples = n.listRelationsByRelationType(null);
 				String tox;
 //				System.out.println("EXPORT 2 "+tuples+" | "+result.getErrorString());
 				if (tuples != null && tuples.size() > 0) {
@@ -208,7 +209,7 @@ public class TopicMapJSONExporter {
 					}
 				}
 //				System.out.println("EXPORT 3 "+tuples+" | "+result.getErrorString());
-				tuples = n.listRestrictedTuples();
+				tuples = n.listRestrictedRelationsByRelationType(null);
 				if (tuples != null && tuples.size() > 0) {
 					Iterator<String>itr = tuples.iterator();
 					while (itr.hasNext()) {
@@ -233,7 +234,59 @@ public class TopicMapJSONExporter {
 							result.addErrorString("SolrExporter.exportTree missing tuple "+tox);
 					}
 				}
-//				System.out.println("EXPORT 4 "+tuples+" | "+result.getErrorString());		
+				//pivots next
+				tuples = n.listPivotsByRelationType(null);
+//				System.out.println("EXPORT 2 "+tuples+" | "+result.getErrorString());
+				if (tuples != null && tuples.size() > 0) {
+					Iterator<String>itr = tuples.iterator();
+					while (itr.hasNext()) {
+						tox = itr.next();
+						//TODO should check for null
+						tNode = (INode)database.getNode(tox, credentials).getResultObject();
+						if (tNode != null) {
+							exportTree(tNode,out,credentials,mydepth);
+							//Now, take apart source and target nodes in case we haven't plucked them yet
+							tox = ((ITuple)tNode).getSubjectLocator();
+							theNode = (INode)database.getNode(tox, credentials).getResultObject();
+							if (theNode != null)
+								exportTree(theNode,out,credentials,mydepth);
+							tox = ((ITuple)tNode).getObject();
+							if (((ITuple)tNode).getObjectType().equals(ITopicQuestsOntology.NODE_TYPE) ||
+							   ((ITuple)tNode).getObjectType().equals(ITopicQuestsOntology.VIRTUAL_NODE_TYPE)) {
+								theNode = (INode)database.getNode(tox, credentials).getResultObject();
+								if (theNode != null) 
+									exportTree(theNode,out,credentials,mydepth);
+							}
+						} else
+							result.addErrorString("SolrExporter.exportTree missing tuple "+tox);
+					}
+				}
+//				System.out.println("EXPORT 3 "+tuples+" | "+result.getErrorString());
+				tuples = n.listRestrictedPivotsByRelationType(null);
+				if (tuples != null && tuples.size() > 0) {
+					Iterator<String>itr = tuples.iterator();
+					while (itr.hasNext()) {
+						tox = itr.next();
+						//TODO should check for null
+						tNode = (INode)database.getNode(tox, credentials).getResultObject();
+						if (tNode != null) {
+							exportTree(tNode,out,credentials,mydepth);
+							//Now, take apart source and target nodes in case we haven't plucked them yet
+							tox = ((ITuple)tNode).getSubjectLocator();
+							theNode = (INode)database.getNode(tox, credentials).getResultObject();
+							if (theNode != null)
+								exportTree(theNode,out,credentials,mydepth);
+							tox = ((ITuple)tNode).getObject();
+							if (((ITuple)tNode).getObjectType().equals(ITopicQuestsOntology.NODE_TYPE) ||
+									   ((ITuple)tNode).getObjectType().equals(ITopicQuestsOntology.VIRTUAL_NODE_TYPE)) {
+								theNode = (INode)database.getNode(tox, credentials).getResultObject();
+								if (theNode != null) 
+									exportTree(theNode,out,credentials,mydepth);
+							}
+						} else
+							result.addErrorString("SolrExporter.exportTree missing tuple "+tox);
+					}
+				}//				System.out.println("EXPORT 4 "+tuples+" | "+result.getErrorString());		
 				System.out.println(depth+" EXPORT+ "+locator);
 			}
 			return result;

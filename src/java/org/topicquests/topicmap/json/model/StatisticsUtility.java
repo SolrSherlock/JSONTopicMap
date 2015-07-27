@@ -5,9 +5,11 @@ package org.topicquests.topicmap.json.model;
 
 import java.util.Iterator;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+//import org.json.simple.JSONObject;
+//import org.json.simple.parser.JSONParser;
 import org.topicquests.util.TextFileHandler;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 
 /**
  * @author park
@@ -65,10 +67,10 @@ public class StatisticsUtility {
 			while (itr.hasNext()) {
 				key = itr.next();
 				x = (Long)data.get(key);
-				if (x != null)
-					buf.append(key+": "+x.toString()+"\n");
+				if (x != null) {
+					buf = buf.append(key).append(": ").append(x.toString()).append("\n");
+				}
 			}
-	
 			return buf.toString();
 		}
 	}
@@ -87,7 +89,7 @@ public class StatisticsUtility {
 				data = new JSONObject();
 			else {
 				try {
-					data = (JSONObject)new JSONParser().parse(json);
+					data = (JSONObject)new JSONParser(JSONParser.MODE_JSON_SIMPLE).parse(json);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -39,7 +39,8 @@ public class TestHarness {
 		//new NewQueryTest_1();
 		//new FirstAirTest();
 		//new QueryBuilderTest();
-		new QueryTest2();
+		//new QueryTest2();
+		new TypeURLTest();
 		System.out.println("Did");
 	}
 

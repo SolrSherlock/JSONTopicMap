@@ -17,11 +17,12 @@ package org.topicquests.topicmap.json.model;
 import java.util.*;
 import org.topicquests.common.api.ITopicQuestsOntology;
 import org.topicquests.model.api.ITicket;
-import org.json.simple.JSONObject;
+//import org.json.simple.JSONObject;
 import org.topicquests.model.api.provider.ITopicDataProvider;
 import org.topicquests.persist.json.api.IJSONDocStoreModel;
 import org.topicquests.util.LoggingPlatform;
 import org.apache.commons.collections4.CollectionUtils;
+import net.minidev.json.JSONObject;
 
 /**
  * @author park
@@ -41,13 +42,17 @@ public class CredentialUtility {
 	}
 
 	/**
-	 * Return <code>true</code> if the document is one of
-	 * <em>public</em> or <em>credentials are satisfied</em>
+	 * Return <code>true</code> if the document is one
+	 * <em>public</em> or <em>credentials are satisfied</em> and <em>isLive</em>
 	 * @param locator
 	 * @param credentials
 	 * @return
 	 */
 	public boolean checkCredentials(JSONObject jo, ITicket credentials) {
+		String il = (String)jo.get(ITopicQuestsOntology.IS_LIVE);
+		if (il != null && il.equals("false")) {
+			return false;
+		}
 		String o = (String)jo.get(ITopicQuestsOntology.IS_PRIVATE_PROPERTY);
 		if (o == null) {
 			//defaults true

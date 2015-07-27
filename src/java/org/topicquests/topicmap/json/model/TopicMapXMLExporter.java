@@ -167,7 +167,7 @@ public class TopicMapXMLExporter {
 					nodes = (List<INode>)xx.getResultObject();
 				}
 				//tuples next
-				List<String> tuples = n.listTuples();
+/**				List<String> tuples = n.listTuples();
 				String tox;
 //				System.out.println("EXPORT 2 "+tuples+" | "+result.getErrorString());
 				if (tuples != null && tuples.size() > 0) {
@@ -219,10 +219,11 @@ public class TopicMapXMLExporter {
 						} else
 							result.addErrorString("SolrExporter.exportTree missing tuple "+tox);
 					}
-				}
+				}*/
 //				System.out.println("EXPORT 4 "+tuples+" | "+result.getErrorString());		
 				System.out.println(depth+" EXPORT+ "+locator);
 			}
+			
 			return result;
 		}
 	}
