@@ -52,7 +52,11 @@
   {"lox":"DocumentCreatorRelationType","sbOf":"RelationType","label":"DocumentCreatorRelation","details":"Topic Map upper DocumentCreator relation type","sIco":"/images/snowflake_sm.png","lIco":"/images/snowflake.png","trCl":["TypeType"]},
   {"lox":"CreatorDocumentRelationType","sbOf":"RelationType","label":"CreatorDocumentRelation","details":"Topic Map upper CreatorDocument relation type","sIco":"/images/snowflake_sm.png","lIco":"/images/snowflake.png","trCl":["TypeType"]},
   {"lox":"DocumentAnnotationRelationType","sbOf":"RelationType","label":"DocumentAnnotationRelationType","details":"Topic Map upper DocumentAnnotation relation type","sIco":"/images/snowflake_sm.png","lIco":"/images/snowflake.png","trCl":["TypeType"]},
-  {"lox":"DocumentTranscluderRelationType","sbOf":"RelationType","label":"DocumentTranscluderRelationType","details":"TQPortal extendion DocumentTranscluder relation type","sIco":"/images/snowflake_sm.png","lIco":"/images/snowflake.png","trCl":["TypeType"]}
+  {"lox":"DocumentTranscluderRelationType","sbOf":"RelationType","label":"DocumentTranscluderRelationType","details":"TQPortal extendion DocumentTranscluder relation type","sIco":"/images/snowflake_sm.png","lIco":"/images/snowflake.png","trCl":["TypeType"]},
+
+  {"lox":"TagBookmarkRelationType","sbOf":"RelationType","label":"Tag Bookmark Relation Type","details":"ISocialBookmarkLegend extension Tag Bookmark relation type","sIco":"/images/snowflake_sm.png","lIco":"/images/snowflake.png","trCl":["TypeType"]},
+  {"lox":"TagUserRelationType","sbOf":"RelationType","label":"Tag User Relation Type","details":"ISocialBookmarkLegend extension Tag User relation type","sIco":"/images/snowflake_sm.png","lIco":"/images/snowflake.png","trCl":["TypeType"]},
+  {"lox":"UserBookmarkRelationType","sbOf":"RelationType","label":"User Bookmark Relation Type","details":"ISocialBookmarkLegend extension User Bookmark relation type","sIco":"/images/snowflake_sm.png","lIco":"/images/snowflake.png","trCl":["TypeType"]}
 
   
 ]}
